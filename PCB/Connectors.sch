@@ -1,0 +1,192 @@
+EESchema Schematic File Version 2
+LIBS:ArduBooster-rescue
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:ArduBooster-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 6
+Title "Connectors"
+Date "Dom 15 Fev 2015"
+Rev "1.0"
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L CONN_01X05 P3
+U 1 1 54D7F0D9
+P 8200 3550
+F 0 "P3" H 8200 3850 50  0000 C CNN
+F 1 "CONTROL" V 8300 3550 50  0000 C CNN
+F 2 "Connect:Wafer_Horizontal15x5.8x7RM2.5-5" H 8200 3550 60  0001 C CNN
+F 3 "" H 8200 3550 60  0000 C CNN
+	1    8200 3550
+	1    0    0    1   
+$EndComp
+$Comp
+L GNDREF #PWR01
+U 1 1 54D7F247
+P 7850 3900
+F 0 "#PWR01" H 7850 3650 60  0001 C CNN
+F 1 "GNDREF" H 7850 3750 60  0000 C CNN
+F 2 "" H 7850 3900 60  0000 C CNN
+F 3 "" H 7850 3900 60  0000 C CNN
+	1    7850 3900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7850 3900 7850 3750
+Wire Wire Line
+	7850 3750 8000 3750
+$Comp
+L +5V #PWR02
+U 1 1 54D7F26C
+P 7850 3200
+F 0 "#PWR02" H 7850 3050 60  0001 C CNN
+F 1 "+5V" H 7850 3340 60  0000 C CNN
+F 2 "" H 7850 3200 60  0000 C CNN
+F 3 "" H 7850 3200 60  0000 C CNN
+	1    7850 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8000 3350 7850 3350
+Wire Wire Line
+	7850 3350 7850 3200
+Wire Wire Line
+	7700 3650 8000 3650
+Wire Wire Line
+	7700 3550 8000 3550
+Text HLabel 7700 3450 0    60   Input ~ 0
+SWITCH
+Wire Wire Line
+	7700 3450 8000 3450
+Text HLabel 7700 3650 0    60   Output ~ 0
+LED1
+Text HLabel 7700 3550 0    60   Output ~ 0
+LED2
+Text HLabel 4150 3650 2    60   Output ~ 0
+CH1_OUT
+Text HLabel 4150 3750 2    60   Output ~ 0
+CH0_OUT
+Text HLabel 4150 3250 2    60   Input ~ 0
+CH1_PEDAL_SIG
+Text HLabel 4150 3350 2    60   Input ~ 0
+CH0_PEDAL_SIG
+$Comp
+L CONN_01X08 P4
+U 1 1 54E8D924
+P 3450 3500
+F 0 "P4" H 3450 3950 50  0000 C CNN
+F 1 "MAIN_CONN" V 3550 3500 50  0000 C CNN
+F 2 "Connectors_Molex:Molex_MiniFit-JR-5569-08A1_2x04x4.20mm_Angled" H 3450 3500 60  0001 C CNN
+F 3 "" H 3450 3500 60  0000 C CNN
+	1    3450 3500
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR03
+U 1 1 54E8E644
+P 3850 3000
+F 0 "#PWR03" H 3850 2850 60  0001 C CNN
+F 1 "+5V" H 3850 3140 60  0000 C CNN
+F 2 "" H 3850 3000 60  0000 C CNN
+F 3 "" H 3850 3000 60  0000 C CNN
+	1    3850 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG04
+U 1 1 54E8E658
+P 4100 3000
+F 0 "#FLG04" H 4100 3095 30  0001 C CNN
+F 1 "PWR_FLAG" H 4100 3180 30  0000 C CNN
+F 2 "" H 4100 3000 60  0000 C CNN
+F 3 "" H 4100 3000 60  0000 C CNN
+	1    4100 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3650 3150 4100 3150
+Wire Wire Line
+	3850 3000 3850 3850
+Wire Wire Line
+	4100 3150 4100 3000
+Connection ~ 3850 3150
+Wire Wire Line
+	3850 3850 3650 3850
+$Comp
+L GNDREF #PWR05
+U 1 1 54E8E6DA
+P 3800 4050
+F 0 "#PWR05" H 3800 3800 60  0001 C CNN
+F 1 "GNDREF" H 3800 3900 60  0000 C CNN
+F 2 "" H 3800 4050 60  0000 C CNN
+F 3 "" H 3800 4050 60  0000 C CNN
+	1    3800 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG06
+U 1 1 54E8E6F6
+P 4100 4050
+F 0 "#FLG06" H 4100 4145 30  0001 C CNN
+F 1 "PWR_FLAG" H 4100 4230 30  0000 C CNN
+F 2 "" H 4100 4050 60  0000 C CNN
+F 3 "" H 4100 4050 60  0000 C CNN
+	1    4100 4050
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4100 4050 4100 4000
+Wire Wire Line
+	4100 4000 3800 4000
+Wire Wire Line
+	3800 3450 3800 4050
+Wire Wire Line
+	3650 3450 3800 3450
+Connection ~ 3800 4000
+Wire Wire Line
+	3650 3550 3800 3550
+Connection ~ 3800 3550
+Wire Wire Line
+	4150 3250 3650 3250
+Wire Wire Line
+	3650 3350 4150 3350
+Wire Wire Line
+	4150 3650 3650 3650
+Wire Wire Line
+	4150 3750 3650 3750
+$EndSCHEMATC

@@ -1,0 +1,206 @@
+Cmp-Mod V01 Created by Cvpcb 0.201502151246+5420~21~ubuntu14.10.1-product   date = Dom 22 Fev 2015 22:23:47 BRT
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C587;
+Reference = C1;
+ValeurCmp = 1u;
+IdModule  = ArduBooster_Library:CAP_BIG;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C5F6;
+Reference = C2;
+ValeurCmp = 1u;
+IdModule  = ArduBooster_Library:CAP_BIG;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C60F;
+Reference = C3;
+ValeurCmp = 1u;
+IdModule  = ArduBooster_Library:CAP_BIG;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C66C;
+Reference = C4;
+ValeurCmp = 1u;
+IdModule  = ArduBooster_Library:CAP_BIG;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FA47;
+Reference = C5;
+ValeurCmp = 22p;
+IdModule  = ArduBooster_Library:CAP_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FAD7;
+Reference = C6;
+ValeurCmp = 22p;
+IdModule  = ArduBooster_Library:CAP_SMALL;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FCE4;
+Reference = C7;
+ValeurCmp = 1u;
+IdModule  = ArduBooster_Library:CAP_BIG;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D8180B;
+Reference = C8;
+ValeurCmp = 100n;
+IdModule  = ArduBooster_Library:CAP_MID;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D81846;
+Reference = C9;
+ValeurCmp = 100n;
+IdModule  = ArduBooster_Library:CAP_MID;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C6AB;
+Reference = D1;
+ValeurCmp = DIODE;
+IdModule  = ArduBooster_Library:DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C6F0;
+Reference = D2;
+ValeurCmp = DIODE;
+IdModule  = ArduBooster_Library:DIODE;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7F099;
+Reference = IC1;
+ValeurCmp = ATMEGA328-P;
+IdModule  = Sockets_DIP:DIP-28__300;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C286/54D7C4AA;
+Reference = P1;
+ValeurCmp = INPUT;
+IdModule  = Connect:bornier4;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C286/54D7CC25;
+Reference = P2;
+ValeurCmp = OUTPUT;
+IdModule  = Connect:bornier4;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C286/54D7F0D9;
+Reference = P3;
+ValeurCmp = CONTROL;
+IdModule  = Connect:bornier5;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C286/54E8D924;
+Reference = P4;
+ValeurCmp = CONN_01X08;
+IdModule  = ArduBooster_Library:ArduBooster_Connector_2x04;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7D705/54D7D7B4;
+Reference = R1;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FEF8;
+Reference = R2;
+ValeurCmp = 470;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FF4D;
+Reference = R3;
+ValeurCmp = 470;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7FD1C;
+Reference = R4;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D8030D;
+Reference = R5;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D809E7;
+Reference = R6;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D80AC6;
+Reference = R7;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D81783;
+Reference = R8;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D8179E;
+Reference = R9;
+ValeurCmp = 10k;
+IdModule  = Discret:R3;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7C565/54D7C56E;
+Reference = U1;
+ValeurCmp = ICL7660;
+IdModule  = Sockets_DIP:DIP-8__300;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7D080/54D7D0D1;
+Reference = U2;
+ValeurCmp = LM358;
+IdModule  = Sockets_DIP:DIP-8__300;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7D705/54D7D70E;
+Reference = U3;
+ValeurCmp = 4052;
+IdModule  = Sockets_DIP:DIP-16__300;
+EndCmp
+
+BeginCmp
+TimeStamp = /54D7EFEF/54D7F8BC;
+Reference = X1;
+ValeurCmp = CRYSTAL;
+IdModule  = Crystals:Crystal_HC50-U_Vertical;
+EndCmp
+
+EndListe

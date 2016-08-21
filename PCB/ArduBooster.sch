@@ -1,0 +1,197 @@
+EESchema Schematic File Version 2
+LIBS:ArduBooster-rescue
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:ArduBooster-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 6
+Title "ArduBooster"
+Date "03 Fev 2015"
+Rev "1.0"
+Comp ""
+Comment1 "Arduino based pedal booster"
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Sheet
+S 2850 3700 900  1300
+U 54D7C286
+F0 "Connectors" 60
+F1 "Connectors.sch" 60
+F2 "SWITCH" I R 3750 3900 60 
+F3 "LED1" O R 3750 4050 60 
+F4 "LED2" O R 3750 4200 60 
+F5 "CH1_OUT" O R 3750 4350 60 
+F6 "CH0_OUT" O R 3750 4500 60 
+F7 "CH1_PEDAL_SIG" I R 3750 4650 60 
+F8 "CH0_PEDAL_SIG" I R 3750 4800 60 
+$EndSheet
+$Sheet
+S 5800 900  1150 800 
+U 54D7C565
+F0 "Doubler_Inverter" 60
+F1 "Doubler_Inverter.sch" 60
+F2 "-5V" O L 5800 1450 60 
+F3 "+9V" O L 5800 1150 60 
+$EndSheet
+$Sheet
+S 3200 900  1150 1150
+U 54D7D080
+F0 "Isolator" 60
+F1 "Isolator.sch" 60
+F2 "+9V" O R 4350 1100 60 
+F3 "CH0_OUT" O R 4350 1250 60 
+F4 "-5V" O R 4350 1850 60 
+F5 "CH0_MUXDEMUX_OUT" O R 4350 1400 60 
+F6 "CH1_MUXDEMUX_OUT" O R 4350 1700 60 
+F7 "CH1_OUT" O R 4350 1550 60 
+$EndSheet
+$Sheet
+S 7350 4600 1650 1250
+U 54D7D705
+F0 "Mux/Demux Source Selector" 60
+F1 "Mux_Demux_Source_Selector.sch" 60
+F2 "CH0_PEDAL_SIG" O L 7350 4800 60 
+F3 "CH0_ARDUINO_SIG" O L 7350 4950 60 
+F4 "CH1_PEDAL_SIG" O L 7350 5100 60 
+F5 "CH1_ARDUINO_SIG" O L 7350 5250 60 
+F6 "OUTPUT_SELECTION" O L 7350 5400 60 
+F7 "CH1_MUXDEMUX_OUT" O L 7350 5700 60 
+F8 "CH0_MUXDEMUX_OUT" O L 7350 5550 60 
+$EndSheet
+$Sheet
+S 7300 2400 1050 1550
+U 54D7EFEF
+F0 "Base Arduino" 60
+F1 "Base_Arduino.sch" 60
+F2 "SWITCH" O L 7300 2650 60 
+F3 "CH1_PEDAL_SIG" O L 7300 2950 60 
+F4 "CH0_PEDAL_SIG" O L 7300 2800 60 
+F5 "LED1" I L 7300 3100 60 
+F6 "LED2" I L 7300 3250 60 
+F7 "OUTPUT_SELECTION" O L 7300 3400 60 
+F8 "CH1_ARDUINO_SIG" O L 7300 3700 60 
+F9 "CH0_ARDUINO_SIG" O L 7300 3550 60 
+$EndSheet
+Wire Wire Line
+	4350 1100 5750 1100
+Wire Wire Line
+	5750 1100 5750 1150
+Wire Wire Line
+	5750 1150 5800 1150
+Wire Wire Line
+	4350 1850 5750 1850
+Wire Wire Line
+	5750 1850 5750 1450
+Wire Wire Line
+	5750 1450 5800 1450
+Wire Wire Line
+	7300 2650 3900 2650
+Wire Wire Line
+	3900 2650 3900 3900
+Wire Wire Line
+	3900 3900 3750 3900
+Wire Wire Line
+	7300 3100 4000 3100
+Wire Wire Line
+	4000 3100 4000 4050
+Wire Wire Line
+	4000 4050 3750 4050
+Wire Wire Line
+	7300 3250 4100 3250
+Wire Wire Line
+	4100 3250 4100 4200
+Wire Wire Line
+	4100 4200 3750 4200
+Wire Wire Line
+	7350 5400 6700 5400
+Wire Wire Line
+	6700 5400 6700 3400
+Wire Wire Line
+	6700 3400 7300 3400
+Wire Wire Line
+	7300 3550 6800 3550
+Wire Wire Line
+	6800 3550 6800 4950
+Wire Wire Line
+	6800 4950 7350 4950
+Wire Wire Line
+	7300 3700 6900 3700
+Wire Wire Line
+	6900 3700 6900 5250
+Wire Wire Line
+	6900 5250 7350 5250
+Wire Wire Line
+	7100 2800 7300 2800
+Wire Wire Line
+	4000 5100 7350 5100
+Wire Wire Line
+	7000 5100 7000 2950
+Wire Wire Line
+	7000 2950 7300 2950
+Wire Wire Line
+	4350 1400 5300 1400
+Wire Wire Line
+	5300 1400 5300 5550
+Wire Wire Line
+	5300 5550 7350 5550
+Wire Wire Line
+	7350 5700 5200 5700
+Wire Wire Line
+	5200 5700 5200 1700
+Wire Wire Line
+	5200 1700 4350 1700
+Wire Wire Line
+	3750 4500 5100 4500
+Wire Wire Line
+	5100 4500 5100 1250
+Wire Wire Line
+	5100 1250 4350 1250
+Wire Wire Line
+	4350 1550 5000 1550
+Wire Wire Line
+	5000 1550 5000 4350
+Wire Wire Line
+	5000 4350 3750 4350
+Wire Wire Line
+	7100 4800 7100 2800
+Wire Wire Line
+	3750 4800 7350 4800
+Connection ~ 7100 4800
+Wire Wire Line
+	4000 5100 4000 4650
+Wire Wire Line
+	4000 4650 3750 4650
+Connection ~ 7000 5100
+$EndSCHEMATC
