@@ -1,0 +1,62 @@
+﻿Arduino - AnalogWrite
+https://www.arduino.cc/en/Reference/analogWrite
+
+Arduino - Switch
+https://www.arduino.cc/en/tutorial/switch
+
+Arduino Tutorial - Lesson 3 - Breadboards and LEDs
+http://www.ladyada.net/learn/arduino/lesson3.html
+
+Arduino - Blink
+https://www.arduino.cc/en/Tutorial/Blink?from=Tutorial.BlinkingLED
+
+Fast PWM DAC
+http://www.avdweb.nl/arduino/libraries/fast-pwm-dac.html
+
+Arduino Playground - Timer1
+http://playground.arduino.cc/code/timer1
+
+Google Code Archive - Long-term storage for Google Code Project Hosting.
+https://code.google.com/archive/p/arduino-timerone/
+
+Analog Output - Convert PWM to Voltage - All
+http://www.instructables.com/id/Analog-Output-Convert-PWM-to-Voltage/
+
+Arduino’s AnalogWrite – Converting PWM to a Voltage
+http://provideyourown.com/2011/analogwrite-convert-pwm-to-voltage/
+
+(Sample)RC Low-pass Filter Design for PWM - Result -
+http://sim.okawa-denshi.jp/en/PWMtool.php
+
+Google
+https://www.google.com.br/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=diy+sprintbooster
+
+www.crosslake.net/~dbipes/sprintbooster/SprintBooster.pdf
+http://www.crosslake.net/~dbipes/sprintbooster/SprintBooster.pdf
+
+Arduino - Map
+https://www.arduino.cc/en/reference/map
+
+map to floating point
+http://forum.arduino.cc/index.php/topic=3922.0
+
+connector sicma 4 vias - Pesquisa Google
+https://www.google.com.br/search?q=connector+sicma+4+vias&espv=2&biw=1920&bih=963&source=lnms&sa=X&ved=0ahUKEwj_rc-y7vzJAhWJxpAKHbTABKIQ_AUIBigA&dpr=1
+
+Cabex
+http://www.cabex.com.br/produto/detalhe/id/83
+
+404 Not Found
+http://www.bmcom.com.br/lojas/papinjetores/produto.php?produto=1226
+
+TC 104.1234 - TC Chicotes - Unitário | Canal da Peça
+https://www.canaldapeca.com.br/p/1106702/tc-1041234-tc-chicotes-unitario
+
+sprint-booster-circuit.jpg (660×469)
+http://www.sprintbooster.ca/images/sprint-booster-circuit.jpg
+
+www.intersil.com/content/dam/Intersil/documents/icl7/icl7660.pdf
+http://www.intersil.com/content/dam/Intersil/documents/icl7/icl7660.pdf
+
+Transistor Tutorial, history, sample circuits
+http://www.sentex.ca/~mec1995/tutorial/xtor/xtor2/xtor2.html
