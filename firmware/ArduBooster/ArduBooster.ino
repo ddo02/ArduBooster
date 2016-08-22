@@ -1,12 +1,20 @@
 #include <EEPROM.h>
+#include <avr/wdt.h>
 
-// Boost mode 1 correction values
+// TODO LIST:
+// Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
+// Auto find mon sensor value (today, is readed is setup function)
+// Save max pesal value
+// Enable watchdog
+// Bypass when on idle
+
+// Boost mode 1 correction values (to use with map function)
 const int MODE_1_MIN = 0;
-const int MODE_1_MAX = 1536; // 50%
+const int MODE_1_MAX = 1535; // 50% (1023 to 1535)
 
-// Boost mode 2 correction values
+// Boost mode 2 correction values (to use with map function)
 const int MODE_2_MIN = 0;
-const int MODE_2_MAX = 2048; // 100%
+const int MODE_2_MAX = 2046; // 100% (1023 to 2046)
 
 // Input signal pins, to read pedal position
 const int sensorPot0Pin = A0;
@@ -82,14 +90,18 @@ void setup() {
   sensorPot0CutValue = sensorPot0CutValue * 1.1;
   sensorPot1CutValue = sensorPot1CutValue * 1.1;
   
+  showBoot();
+  
   // Load and show saved working mode
   mode = readMode();
   showMode(mode);
+  
+  wdt_enable(WDTO_15MS);
 }
 
 // Arduino main loop
 void loop() {
-
+  
   // read pedal values
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
@@ -202,11 +214,12 @@ void loop() {
   
   showMode(mode);
   
-  //Serial.println();
+  //Serial.println(mode);
   
   delay(10);
   
   digitalWrite(enableMuxPin, HIGH);
+  wdt_reset();
 }
 
 int nextMode() {
@@ -228,6 +241,17 @@ int readMode() {
   }
   
   return value;
+}
+
+void showBoot() {
+
+  digitalWrite(ledPin0, HIGH);   
+  digitalWrite(ledPin1, HIGH);
+  
+  delay(50);
+  
+  digitalWrite(ledPin0, LOW);   
+  digitalWrite(ledPin1, LOW);
 }
 
 void showMode(int mode) {
