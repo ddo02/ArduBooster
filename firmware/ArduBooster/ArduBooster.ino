@@ -5,8 +5,9 @@
 // Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
 // Auto find mon sensor value (today, is readed is setup function)
 // Save max pesal value
-// Enable watchdog
+// *OK* Enable watchdog
 // Bypass when on idle
+// *OK* Lower engineering margin :) (10% to 5% [?])
 
 // Boost mode 1 correction values (to use with map function)
 const int MODE_1_MIN = 0;
@@ -87,8 +88,8 @@ void setup() {
   sensorPot0CutValue = analogRead(sensorPot0Pin);
   sensorPot1CutValue = analogRead(sensorPot1Pin);
   // Engineering margin of safety :)
-  sensorPot0CutValue = sensorPot0CutValue * 1.1;
-  sensorPot1CutValue = sensorPot1CutValue * 1.1;
+  sensorPot0CutValue = sensorPot0CutValue * 1.05;
+  sensorPot1CutValue = sensorPot1CutValue * 1.05;
   
   showBoot();
   
