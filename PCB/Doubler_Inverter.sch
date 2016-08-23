@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:ArduBooster-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -39,9 +38,9 @@ Title "Doubler/Inverter"
 Date "Dom 15 Fev 2015"
 Rev "1.0"
 Comp ""
-Comment1 "Input: 0V/5V"
-Comment2 "Output: -5V/9V"
-Comment3 ""
+Comment1 "Output: -5V/9V"
+Comment2 "Input: 0V/5V"
+Comment3 "Doubler/Inverter - Source to OpAmp"
 Comment4 ""
 $EndDescr
 $Comp
@@ -56,70 +55,70 @@ F 3 "" H 5250 3700 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-ArduBooster C1
+L C C1
 U 1 1 54D7C587
 P 3800 3550
 F 0 "C1" H 3850 3650 50  0000 L CNN
 F 1 "1u" H 3850 3450 50  0000 L CNN
-F 2 "ArduBooster_Library:CAP_BIG" H 3838 3400 30  0001 C CNN
+F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 3838 3400 30  0001 C CNN
 F 3 "" H 3800 3550 60  0000 C CNN
 	1    3800 3550
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-ArduBooster C2
+L C C2
 U 1 1 54D7C5F6
 P 5650 4550
 F 0 "C2" H 5700 4650 50  0000 L CNN
 F 1 "1u" H 5700 4450 50  0000 L CNN
-F 2 "ArduBooster_Library:CAP_BIG" H 5688 4400 30  0001 C CNN
+F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 5688 4400 30  0001 C CNN
 F 3 "" H 5650 4550 60  0000 C CNN
 	1    5650 4550
 	0    1    1    0   
 $EndComp
 $Comp
-L C-RESCUE-ArduBooster C3
+L C C3
 U 1 1 54D7C60F
 P 7200 4950
 F 0 "C3" H 7250 5050 50  0000 L CNN
 F 1 "1u" H 7250 4850 50  0000 L CNN
-F 2 "ArduBooster_Library:CAP_BIG" H 7238 4800 30  0001 C CNN
+F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 7238 4800 30  0001 C CNN
 F 3 "" H 7200 4950 60  0000 C CNN
 	1    7200 4950
 	1    0    0    -1  
 $EndComp
 $Comp
-L C-RESCUE-ArduBooster C4
+L C C4
 U 1 1 54D7C66C
 P 7600 4950
 F 0 "C4" H 7650 5050 50  0000 L CNN
 F 1 "1u" H 7650 4850 50  0000 L CNN
-F 2 "ArduBooster_Library:CAP_BIG" H 7638 4800 30  0001 C CNN
+F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 7638 4800 30  0001 C CNN
 F 3 "" H 7600 4950 60  0000 C CNN
 	1    7600 4950
 	1    0    0    -1  
 $EndComp
 $Comp
-L DIODE D1
+L D D1
 U 1 1 54D7C6AB
 P 6400 4150
 F 0 "D1" H 6400 4250 50  0000 C CNN
 F 1 "1n4007" H 6400 4050 50  0000 C CNN
-F 2 "ArduBooster_Library:DIODE" H 6400 4150 60  0001 C CNN
+F 2 "Discret:D3" H 6400 4150 60  0001 C CNN
 F 3 "" H 6400 4150 60  0000 C CNN
 	1    6400 4150
-	0    1    1    0   
+	0    -1   -1   0   
 $EndComp
 $Comp
-L DIODE D2
+L D D2
 U 1 1 54D7C6F0
 P 6800 4550
 F 0 "D2" H 6800 4650 50  0000 C CNN
 F 1 "1n4007" H 6800 4450 50  0000 C CNN
-F 2 "ArduBooster_Library:DIODE" H 6800 4550 60  0001 C CNN
+F 2 "Discret:D3" H 6800 4550 60  0001 C CNN
 F 3 "" H 6800 4550 60  0000 C CNN
 	1    6800 4550
-	1    0    0    -1  
+	-1   0    0    1   
 $EndComp
 NoConn ~ 4400 3850
 NoConn ~ 6100 3850
@@ -163,7 +162,7 @@ Wire Wire Line
 Wire Wire Line
 	4000 3250 3800 3250
 Wire Wire Line
-	3800 3250 3800 3350
+	3800 3250 3800 3400
 Wire Wire Line
 	4400 3650 4000 3650
 Wire Wire Line
@@ -171,39 +170,39 @@ Wire Wire Line
 Wire Wire Line
 	4000 3850 3800 3850
 Wire Wire Line
-	3800 3850 3800 3750
+	3800 3850 3800 3700
 Wire Wire Line
-	5450 4550 4250 4550
+	4250 4550 5500 4550
 Wire Wire Line
 	4250 4550 4250 3450
 Connection ~ 4250 3450
 Wire Wire Line
-	5850 4550 6600 4550
+	5800 4550 6650 4550
 Wire Wire Line
-	6400 4350 6400 4550
+	6400 4300 6400 4550
 Connection ~ 6400 4550
 Wire Wire Line
-	6400 3950 6400 2950
+	6400 2950 6400 4000
 Wire Wire Line
 	6400 2950 5200 2950
 Wire Wire Line
 	5200 2800 5200 3050
 Wire Wire Line
-	7000 4550 7900 4550
+	6950 4550 7900 4550
 Wire Wire Line
-	7200 4550 7200 4750
+	7200 4550 7200 4800
 Wire Wire Line
-	7600 4750 7600 3550
+	7600 3550 7600 4800
 Wire Wire Line
 	6100 3550 7900 3550
 Connection ~ 7600 3550
 Connection ~ 7200 4550
 Wire Wire Line
-	7600 5150 7600 5250
+	7600 5100 7600 5250
 Wire Wire Line
 	7600 5250 7200 5250
 Wire Wire Line
-	7200 5250 7200 5150
+	7200 5250 7200 5100
 Wire Wire Line
 	7400 5350 7400 5250
 Connection ~ 7400 5250

@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:ArduBooster-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -39,13 +38,13 @@ Title "Output isolator"
 Date "Dom 15 Fev 2015"
 Rev "1.0"
 Comp ""
-Comment1 ""
+Comment1 "Used to isolate DAC to output"
 Comment2 ""
 Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L LM358-RESCUE-ArduBooster U2
+L LM358 U2
 U 1 1 54D7D0D1
 P 5650 2800
 F 0 "U2" H 5600 3000 60  0000 L CNN
@@ -56,7 +55,7 @@ F 3 "" H 5650 2800 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5150 2900 5050 2900
+	5050 2900 5350 2900
 Wire Wire Line
 	5050 2900 5050 3300
 Wire Wire Line
@@ -64,11 +63,11 @@ Wire Wire Line
 Wire Wire Line
 	6250 3300 6250 2800
 Wire Wire Line
-	5550 3500 5550 3200
+	5550 3100 5550 3500
 Wire Wire Line
-	5550 2150 5550 2400
+	5550 2150 5550 2500
 $Comp
-L LM358-RESCUE-ArduBooster U2
+L LM358 U2
 U 2 1 54D7D175
 P 5650 4800
 F 0 "U2" H 5600 5000 60  0000 L CNN
@@ -79,9 +78,9 @@ F 3 "" H 5650 4800 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5550 5500 5550 5200
+	5550 5100 5550 5500
 Wire Wire Line
-	5150 4900 5050 4900
+	5050 4900 5350 4900
 Wire Wire Line
 	5050 4900 5050 5300
 Wire Wire Line
@@ -89,17 +88,17 @@ Wire Wire Line
 Wire Wire Line
 	6250 5300 6250 4800
 Wire Wire Line
-	6150 4800 6500 4800
+	5950 4800 6500 4800
 Wire Wire Line
-	5550 4200 5550 4400
+	5550 4200 5550 4500
 Wire Wire Line
-	4400 2700 5150 2700
+	4400 2700 5350 2700
 Connection ~ 6250 2800
 Connection ~ 6250 4800
 Wire Wire Line
-	6150 2800 6500 2800
+	5950 2800 6500 2800
 Wire Wire Line
-	5150 4700 4400 4700
+	4400 4700 5350 4700
 Text HLabel 5550 2150 1    60   Output ~ 0
 +9V
 Text HLabel 6500 2800 2    60   Output ~ 0

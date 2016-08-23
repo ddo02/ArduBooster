@@ -1,5 +1,4 @@
 EESchema Schematic File Version 2
-LIBS:ArduBooster-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -39,10 +38,10 @@ Title "Mux/Demux source selector"
 Date "Dom 15 Fev 2015"
 Rev "1.0"
 Comp ""
-Comment1 "If OUTPUT_SELECTION is \"0\", pedal signal is used."
-Comment2 "If OUTPUT_SELECTION is \"1\", Arduino signal is used."
-Comment3 ""
-Comment4 ""
+Comment1 "If OUTPUT_SELECTION is \"0\", pedal signal is used"
+Comment2 "If OUTPUT_SELECTION is \"1\", Arduino signal is used"
+Comment3 "Used as workaround to Arduino boot dalay"
+Comment4 "Select output source"
 $EndDescr
 $Comp
 L 4052 U3
@@ -83,7 +82,7 @@ Wire Wire Line
 	5100 4400 4950 4400
 Connection ~ 4950 4400
 $Comp
-L R-RESCUE-ArduBooster R1
+L R R1
 U 1 1 54D7D7B4
 P 4700 4350
 F 0 "R1" V 4780 4350 50  0000 C CNN
@@ -100,9 +99,9 @@ Wire Wire Line
 Wire Wire Line
 	4850 4050 4200 4050
 Wire Wire Line
-	4700 4050 4700 4100
+	4700 4050 4700 4200
 Wire Wire Line
-	4700 4650 4700 4600
+	4700 4650 4700 4500
 Connection ~ 4950 4650
 Connection ~ 4700 4050
 Wire Wire Line
