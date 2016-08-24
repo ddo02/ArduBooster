@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/ddo/ArduBooster/PCB/ArduBooster.sch</source>
-    <date>Qua 24 Ago 2016 10:27:49 BRT</date>
+    <date>Qua 24 Ago 2016 10:41:52 BRT</date>
     <tool>Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -93,7 +93,7 @@
     </comp>
     <comp ref="P4">
       <value>MAIN_CONN</value>
-      <footprint>Connectors_Molex:Molex_MiniFit-JR-5556-06A_2x03x4.20mm_Straight</footprint>
+      <footprint>Connectors_Molex:Molex_MiniFit-JR-5569-06A1_2x03x4.20mm_Angled</footprint>
       <libsource lib="conn" part="CONN_01X06"/>
       <sheetpath names="/Connectors/" tstamps="/54D7C286/"/>
       <tstamp>54E8D924</tstamp>

@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/ddo/ArduBooster/PCB/ArduBooster.sch)
-    (date "Qua 24 Ago 2016 10:27:38 BRT")
+    (date "Qua 24 Ago 2016 10:41:50 BRT")
     (tool "Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -78,7 +78,7 @@
       (tstamp 54D7F0D9))
     (comp (ref P4)
       (value MAIN_CONN)
-      (footprint Connectors_Molex:Molex_MiniFit-JR-5556-06A_2x03x4.20mm_Straight)
+      (footprint Connectors_Molex:Molex_MiniFit-JR-5569-06A1_2x03x4.20mm_Angled)
       (libsource (lib conn) (part CONN_01X06))
       (sheetpath (names /Connectors/) (tstamps /54D7C286/))
       (tstamp 54E8D924))

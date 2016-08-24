@@ -110,7 +110,7 @@ U 1 1 54E8D924
 P 3450 4350
 F 0 "P4" H 3450 4800 50  0000 C CNN
 F 1 "MAIN_CONN" V 3550 4350 50  0000 C CNN
-F 2 "Connectors_Molex:Molex_MiniFit-JR-5556-06A_2x03x4.20mm_Straight" H 3450 4350 60  0001 C CNN
+F 2 "Connectors_Molex:Molex_MiniFit-JR-5569-06A1_2x03x4.20mm_Angled" H 3450 4350 60  0001 C CNN
 F 3 "" H 3450 4350 60  0000 C CNN
 	1    3450 4350
 	-1   0    0    1   
