@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>/media/ddo02/src/ArduBooster/PCB/ArduBooster.sch</source>
-    <date>Ter 23 Ago 2016 22:20:40 BRT</date>
-    <tool>Eeschema 4.0.2+e4-6225~38~ubuntu14.04.1-stable</tool>
+    <source>/home/ddo/ArduBooster/PCB/ArduBooster.sch</source>
+    <date>Qua 24 Ago 2016 10:27:49 BRT</date>
+    <tool>Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>ArduBooster</title>
@@ -114,7 +114,7 @@
     </comp>
     <comp ref="U1">
       <value>ICL7660</value>
-      <footprint>Sockets_DIP:DIP-8__300</footprint>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="ArduBooster-cache" part="ICL7660"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C56E</tstamp>
@@ -163,14 +163,14 @@
     </comp>
     <comp ref="U2">
       <value>LM358</value>
-      <footprint>Sockets_DIP:DIP-8__300</footprint>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="linear" part="LM358"/>
       <sheetpath names="/Isolator/" tstamps="/54D7D080/"/>
       <tstamp>54D7D0D1</tstamp>
     </comp>
     <comp ref="U3">
       <value>4052</value>
-      <footprint>Sockets_DIP:DIP-16__300</footprint>
+      <footprint>Housings_DIP:DIP-16_W7.62mm_LongPads</footprint>
       <libsource lib="cmos4000" part="4052"/>
       <sheetpath names="/Mux/Demux Source Selector/" tstamps="/54D7D705/"/>
       <tstamp>54D7D70E</tstamp>
@@ -184,7 +184,7 @@
     </comp>
     <comp ref="IC1">
       <value>ATMEGA328-P</value>
-      <footprint>Sockets_DIP:DIP-28__300</footprint>
+      <footprint>Housings_DIP:DIP-28_W7.62mm_LongPads</footprint>
       <libsource lib="atmel" part="ATMEGA328-P"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7F099</tstamp>
@@ -559,6 +559,9 @@
     </libpart>
   </libparts>
   <libraries>
+    <library logical="cmos4000">
+      <uri>/usr/share/kicad/library/cmos4000.lib</uri>
+    </library>
     <library logical="device">
       <uri>/usr/share/kicad/library/device.lib</uri>
     </library>
@@ -568,14 +571,11 @@
     <library logical="linear">
       <uri>/usr/share/kicad/library/linear.lib</uri>
     </library>
-    <library logical="cmos4000">
-      <uri>/usr/share/kicad/library/cmos4000.lib</uri>
+    <library logical="ArduBooster-cache">
+      <uri>/home/ddo/ArduBooster/PCB/ArduBooster-cache.lib</uri>
     </library>
     <library logical="atmel">
       <uri>/usr/share/kicad/library/atmel.lib</uri>
-    </library>
-    <library logical="ArduBooster-cache">
-      <uri>/media/ddo02/src/ArduBooster/PCB/ArduBooster-cache.lib</uri>
     </library>
   </libraries>
   <nets>
