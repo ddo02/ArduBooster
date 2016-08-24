@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>../PCB/ArduBooster.sch</source>
-    <date>Dom 07 Ago 2016 13:47:54 BRT</date>
+    <source>/media/ddo02/src/ArduBooster/PCB/ArduBooster.sch</source>
+    <date>Ter 23 Ago 2016 22:20:40 BRT</date>
     <tool>Eeschema 4.0.2+e4-6225~38~ubuntu14.04.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -24,7 +24,7 @@
         <rev>1.0</rev>
         <date>Dom 15 Fev 2015</date>
         <source>Connectors.sch</source>
-        <comment number="1" value=""/>
+        <comment number="1" value="Board connectors"/>
         <comment number="2" value=""/>
         <comment number="3" value=""/>
         <comment number="4" value=""/>
@@ -37,9 +37,9 @@
         <rev>1.0</rev>
         <date>Dom 15 Fev 2015</date>
         <source>Doubler_Inverter.sch</source>
-        <comment number="1" value="Input: 0V/5V"/>
-        <comment number="2" value="Output: -5V/9V"/>
-        <comment number="3" value=""/>
+        <comment number="1" value="Output: -5V/9V"/>
+        <comment number="2" value="Input: 0V/5V"/>
+        <comment number="3" value="Doubler/Inverter - Source to OpAmp"/>
         <comment number="4" value=""/>
       </title_block>
     </sheet>
@@ -50,7 +50,7 @@
         <rev>1.0</rev>
         <date>Dom 15 Fev 2015</date>
         <source>Isolator.sch</source>
-        <comment number="1" value=""/>
+        <comment number="1" value="Used to isolate DAC to output"/>
         <comment number="2" value=""/>
         <comment number="3" value=""/>
         <comment number="4" value=""/>
@@ -63,10 +63,10 @@
         <rev>1.0</rev>
         <date>Dom 15 Fev 2015</date>
         <source>Mux_Demux_Source_Selector.sch</source>
-        <comment number="1" value="If OUTPUT_SELECTION is &quot;0&quot;, pedal signal is used."/>
-        <comment number="2" value="If OUTPUT_SELECTION is &quot;1&quot;, Arduino signal is used."/>
-        <comment number="3" value=""/>
-        <comment number="4" value=""/>
+        <comment number="1" value="If OUTPUT_SELECTION is &quot;0&quot;, pedal signal is used"/>
+        <comment number="2" value="If OUTPUT_SELECTION is &quot;1&quot;, Arduino signal is used"/>
+        <comment number="3" value="Used as workaround to Arduino boot dalay"/>
+        <comment number="4" value="Select output source"/>
       </title_block>
     </sheet>
     <sheet number="6" name="/Base Arduino/" tstamps="/54D7EFEF/">
@@ -76,7 +76,7 @@
         <rev>1.0</rev>
         <date>Dom 15 Fev 2015</date>
         <source>Base_Arduino.sch</source>
-        <comment number="1" value=""/>
+        <comment number="1" value="Basic Arduino setup"/>
         <comment number="2" value=""/>
         <comment number="3" value=""/>
         <comment number="4" value=""/>
@@ -93,10 +93,24 @@
     </comp>
     <comp ref="P4">
       <value>MAIN_CONN</value>
-      <footprint>Connectors_Molex:Molex_MiniFit-JR-5569-08A1_2x04x4.20mm_Angled</footprint>
-      <libsource lib="conn" part="CONN_01X08"/>
+      <footprint>Connectors_Molex:Molex_MiniFit-JR-5556-06A_2x03x4.20mm_Straight</footprint>
+      <libsource lib="conn" part="CONN_01X06"/>
       <sheetpath names="/Connectors/" tstamps="/54D7C286/"/>
       <tstamp>54E8D924</tstamp>
+    </comp>
+    <comp ref="P2">
+      <value>DEBUG TX/RX</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x02</footprint>
+      <libsource lib="conn" part="CONN_01X02"/>
+      <sheetpath names="/Connectors/" tstamps="/54D7C286/"/>
+      <tstamp>57BCD0AF</tstamp>
+    </comp>
+    <comp ref="P1">
+      <value>ISP</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x03</footprint>
+      <libsource lib="conn" part="CONN_02X03"/>
+      <sheetpath names="/Connectors/" tstamps="/54D7C286/"/>
+      <tstamp>57BCD0E6</tstamp>
     </comp>
     <comp ref="U1">
       <value>ICL7660</value>
@@ -107,50 +121,50 @@
     </comp>
     <comp ref="C1">
       <value>1u</value>
-      <footprint>ArduBooster_Library:CAP_BIG</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W4.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C587</tstamp>
     </comp>
     <comp ref="C2">
       <value>1u</value>
-      <footprint>ArduBooster_Library:CAP_BIG</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W4.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C5F6</tstamp>
     </comp>
     <comp ref="C3">
       <value>1u</value>
-      <footprint>ArduBooster_Library:CAP_BIG</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W4.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C60F</tstamp>
     </comp>
     <comp ref="C4">
       <value>1u</value>
-      <footprint>ArduBooster_Library:CAP_BIG</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W4.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C66C</tstamp>
     </comp>
     <comp ref="D1">
       <value>1n4007</value>
-      <footprint>ArduBooster_Library:DIODE</footprint>
-      <libsource lib="ArduBooster-cache" part="DIODE"/>
+      <footprint>Discret:D3</footprint>
+      <libsource lib="device" part="D"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C6AB</tstamp>
     </comp>
     <comp ref="D2">
       <value>1n4007</value>
-      <footprint>ArduBooster_Library:DIODE</footprint>
-      <libsource lib="ArduBooster-cache" part="DIODE"/>
+      <footprint>Discret:D3</footprint>
+      <libsource lib="device" part="D"/>
       <sheetpath names="/Doubler_Inverter/" tstamps="/54D7C565/"/>
       <tstamp>54D7C6F0</tstamp>
     </comp>
     <comp ref="U2">
       <value>LM358</value>
       <footprint>Sockets_DIP:DIP-8__300</footprint>
-      <libsource lib="ArduBooster-rescue" part="LM358-RESCUE-ArduBooster"/>
+      <libsource lib="linear" part="LM358"/>
       <sheetpath names="/Isolator/" tstamps="/54D7D080/"/>
       <tstamp>54D7D0D1</tstamp>
     </comp>
@@ -164,114 +178,121 @@
     <comp ref="R1">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Mux/Demux Source Selector/" tstamps="/54D7D705/"/>
       <tstamp>54D7D7B4</tstamp>
     </comp>
     <comp ref="IC1">
       <value>ATMEGA328-P</value>
       <footprint>Sockets_DIP:DIP-28__300</footprint>
-      <libsource lib="ArduBooster-rescue" part="ATMEGA328-P-RESCUE-ArduBooster"/>
+      <libsource lib="atmel" part="ATMEGA328-P"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7F099</tstamp>
     </comp>
     <comp ref="X1">
       <value>CRYSTAL</value>
       <footprint>Crystals:Crystal_HC50-U_Vertical</footprint>
-      <libsource lib="ArduBooster-cache" part="CRYSTAL"/>
+      <libsource lib="device" part="Crystal"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7F8BC</tstamp>
     </comp>
     <comp ref="C5">
       <value>22p</value>
-      <footprint>ArduBooster_Library:CAP_SMALL</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W2_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FA47</tstamp>
     </comp>
     <comp ref="C6">
       <value>22p</value>
-      <footprint>ArduBooster_Library:CAP_SMALL</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W2_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FAD7</tstamp>
     </comp>
     <comp ref="C7">
       <value>1u</value>
-      <footprint>ArduBooster_Library:CAP_BIG</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W4.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FCE4</tstamp>
     </comp>
     <comp ref="R4">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FD1C</tstamp>
     </comp>
     <comp ref="R2">
       <value>470</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FEF8</tstamp>
     </comp>
     <comp ref="R3">
       <value>470</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7FF4D</tstamp>
     </comp>
     <comp ref="R5">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D8030D</tstamp>
     </comp>
     <comp ref="R6">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D809E7</tstamp>
     </comp>
     <comp ref="R7">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D80AC6</tstamp>
     </comp>
     <comp ref="R8">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D81783</tstamp>
     </comp>
     <comp ref="R9">
       <value>10k</value>
       <footprint>Discret:R3</footprint>
-      <libsource lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster"/>
+      <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D8179E</tstamp>
     </comp>
     <comp ref="C8">
       <value>100n</value>
-      <footprint>ArduBooster_Library:CAP_MID</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W2.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D8180B</tstamp>
     </comp>
     <comp ref="C9">
       <value>100n</value>
-      <footprint>ArduBooster_Library:CAP_MID</footprint>
-      <libsource lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster"/>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W2.5_P5</footprint>
+      <libsource lib="device" part="C"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D81846</tstamp>
+    </comp>
+    <comp ref="C10">
+      <value>100nF</value>
+      <footprint>Capacitors_ThroughHole:C_Rect_L7_W2.5_P5</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
+      <tstamp>57BC9625</tstamp>
     </comp>
   </components>
   <libparts>
@@ -300,14 +321,25 @@
         <pin num="16" name="VDD" type="power_in"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-rescue" part="ATMEGA328-P-RESCUE-ArduBooster">
+    <libpart lib="atmel" part="ATMEGA168A-P">
+      <aliases>
+        <alias>ATMEGA48A-P</alias>
+        <alias>ATMEGA48PA-P</alias>
+        <alias>ATMEGA88A-P</alias>
+        <alias>ATMEGA88PA-P</alias>
+        <alias>ATMEGA168PA-P</alias>
+        <alias>ATMEGA328-P</alias>
+        <alias>ATMEGA328P-P</alias>
+      </aliases>
+      <description>PDIP28 Narrow, 16k Flash, 1kB SRAM, 512B EEPROM</description>
+      <docs>http://www.atmel.com/images/atmel-8271-8-bit-avr-microcontroller-atmega48a-48pa-88a-88pa-168a-168pa-328-328p_datasheet.pdf</docs>
       <footprints>
         <fp>28DIP-ELL600</fp>
         <fp>28dip600</fp>
       </footprints>
       <fields>
         <field name="Reference">IC</field>
-        <field name="Value">ATMEGA328-P-RESCUE-ArduBooster</field>
+        <field name="Value">ATMEGA168A-P</field>
         <field name="Footprint">DIL28</field>
       </fields>
       <pins>
@@ -338,22 +370,42 @@
         <pin num="25" name="(PCINT10/ADC2)PC2" type="BiDi"/>
         <pin num="26" name="(PCINT11/ADC3)PC3" type="BiDi"/>
         <pin num="27" name="(PCINT12/SDA/ADC4)PC4" type="BiDi"/>
-        <pin num="28" name="(PCINT14/SCL/ADC5)PC5" type="BiDi"/>
+        <pin num="28" name="(PCINT13/SCL/ADC5)PC5" type="BiDi"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-rescue" part="C-RESCUE-ArduBooster">
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
       <footprints>
-        <fp>SM*</fp>
         <fp>C?</fp>
-        <fp>C1-1</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
       </footprints>
       <fields>
         <field name="Reference">C</field>
-        <field name="Value">C-RESCUE-ArduBooster</field>
+        <field name="Value">C</field>
       </fields>
       <pins>
         <pin num="1" name="~" type="passive"/>
         <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X02">
+      <description>Connector 01x02</description>
+      <footprints>
+        <fp>Pin_Header_Straight_1X02</fp>
+        <fp>Pin_Header_Angled_1X02</fp>
+        <fp>Socket_Strip_Straight_1X02</fp>
+        <fp>Socket_Strip_Angled_1X02</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X02</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
       </pins>
     </libpart>
     <libpart lib="conn" part="CONN_01X05">
@@ -376,17 +428,17 @@
         <pin num="5" name="P5" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="conn" part="CONN_01X08">
-      <description>Connector 01x08</description>
+    <libpart lib="conn" part="CONN_01X06">
+      <description>Connector 01x06</description>
       <footprints>
-        <fp>Pin_Header_Straight_1X08</fp>
-        <fp>Pin_Header_Angled_1X08</fp>
-        <fp>Socket_Strip_Straight_1X08</fp>
-        <fp>Socket_Strip_Angled_1X08</fp>
+        <fp>Pin_Header_Straight_1X06</fp>
+        <fp>Pin_Header_Angled_1X06</fp>
+        <fp>Socket_Strip_Straight_1X06</fp>
+        <fp>Socket_Strip_Angled_1X06</fp>
       </footprints>
       <fields>
         <field name="Reference">P</field>
-        <field name="Value">CONN_01X08</field>
+        <field name="Value">CONN_01X06</field>
       </fields>
       <pins>
         <pin num="1" name="P1" type="passive"/>
@@ -395,32 +447,59 @@
         <pin num="4" name="P4" type="passive"/>
         <pin num="5" name="P5" type="passive"/>
         <pin num="6" name="P6" type="passive"/>
-        <pin num="7" name="P7" type="passive"/>
-        <pin num="8" name="P8" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-cache" part="CRYSTAL">
+    <libpart lib="conn" part="CONN_02X03">
+      <description>Connector 02x03</description>
+      <footprints>
+        <fp>Pin_Header_Straight_2X03</fp>
+        <fp>Pin_Header_Angled_2X03</fp>
+        <fp>Socket_Strip_Straight_2X03</fp>
+        <fp>Socket_Strip_Angled_2X03</fp>
+      </footprints>
       <fields>
-        <field name="Reference">X</field>
-        <field name="Value">CRYSTAL</field>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_02X03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+        <pin num="3" name="P3" type="passive"/>
+        <pin num="4" name="P4" type="passive"/>
+        <pin num="5" name="P5" type="passive"/>
+        <pin num="6" name="P6" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="Crystal">
+      <description>Two pin crystal</description>
+      <footprints>
+        <fp>Crystal_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">Y</field>
+        <field name="Value">Crystal</field>
       </fields>
       <pins>
         <pin num="1" name="1" type="passive"/>
         <pin num="2" name="2" type="passive"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-cache" part="DIODE">
+    <libpart lib="device" part="D">
+      <description>Diode</description>
       <footprints>
-        <fp>D?</fp>
-        <fp>S*</fp>
+        <fp>Diode_*</fp>
+        <fp>D-Pak_TO252AA</fp>
+        <fp>*SingleDiode</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
       </footprints>
       <fields>
         <field name="Reference">D</field>
-        <field name="Value">DIODE</field>
+        <field name="Value">D</field>
       </fields>
       <pins>
-        <pin num="1" name="A" type="passive"/>
-        <pin num="2" name="K" type="passive"/>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
       </pins>
     </libpart>
     <libpart lib="ArduBooster-cache" part="ICL7660">
@@ -438,10 +517,19 @@
         <pin num="8" name="V+" type="power_in"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-rescue" part="LM358-RESCUE-ArduBooster">
+    <libpart lib="linear" part="LM358">
+      <aliases>
+        <alias>LMC6062</alias>
+        <alias>LMC6082</alias>
+        <alias>LM358N</alias>
+        <alias>TL072</alias>
+        <alias>TL082</alias>
+      </aliases>
+      <description>Dual Op amp (low power)</description>
+      <docs>ns/lm158.pdf</docs>
       <fields>
         <field name="Reference">U</field>
-        <field name="Value">LM358-RESCUE-ArduBooster</field>
+        <field name="Value">LM358</field>
       </fields>
       <pins>
         <pin num="1" name="~" type="output"/>
@@ -454,17 +542,15 @@
         <pin num="8" name="V+" type="power_in"/>
       </pins>
     </libpart>
-    <libpart lib="ArduBooster-rescue" part="R-RESCUE-ArduBooster">
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
       <footprints>
-        <fp>R?</fp>
-        <fp>SM0603</fp>
-        <fp>SM0805</fp>
-        <fp>R?-*</fp>
-        <fp>SM1206</fp>
+        <fp>R_*</fp>
+        <fp>Resistor_*</fp>
       </footprints>
       <fields>
         <field name="Reference">R</field>
-        <field name="Value">R-RESCUE-ArduBooster</field>
+        <field name="Value">R</field>
       </fields>
       <pins>
         <pin num="1" name="~" type="passive"/>
@@ -473,223 +559,237 @@
     </libpart>
   </libparts>
   <libraries>
+    <library logical="device">
+      <uri>/usr/share/kicad/library/device.lib</uri>
+    </library>
     <library logical="conn">
       <uri>/usr/share/kicad/library/conn.lib</uri>
     </library>
-    <library logical="ArduBooster-rescue">
-      <uri>../PCB/ArduBooster-rescue.lib</uri>
+    <library logical="linear">
+      <uri>/usr/share/kicad/library/linear.lib</uri>
     </library>
     <library logical="cmos4000">
       <uri>/usr/share/kicad/library/cmos4000.lib</uri>
     </library>
+    <library logical="atmel">
+      <uri>/usr/share/kicad/library/atmel.lib</uri>
+    </library>
     <library logical="ArduBooster-cache">
-      <uri>../PCB/ArduBooster-cache.lib</uri>
+      <uri>/media/ddo02/src/ArduBooster/PCB/ArduBooster-cache.lib</uri>
     </library>
   </libraries>
   <nets>
-    <net code="1" name="/Base Arduino/CH1_ARDUINO_SIG">
-      <node ref="R9" pin="1"/>
-      <node ref="U3" pin="5"/>
-      <node ref="C8" pin="1"/>
-    </net>
-    <net code="2" name="/Base Arduino/CH0_ARDUINO_SIG">
-      <node ref="R8" pin="1"/>
-      <node ref="C9" pin="1"/>
-      <node ref="U3" pin="14"/>
-    </net>
-    <net code="3" name="/Base Arduino/OUTPUT_SELECTION">
-      <node ref="R1" pin="1"/>
-      <node ref="U3" pin="10"/>
-      <node ref="IC1" pin="17"/>
-    </net>
-    <net code="4" name="/Base Arduino/LED2">
-      <node ref="P3" pin="3"/>
-      <node ref="R3" pin="1"/>
-    </net>
-    <net code="5" name="/Base Arduino/LED1">
-      <node ref="P3" pin="2"/>
-      <node ref="R2" pin="1"/>
-    </net>
-    <net code="6" name="/Base Arduino/CH1_PEDAL_SIG">
-      <node ref="R6" pin="2"/>
-      <node ref="U3" pin="1"/>
-      <node ref="P4" pin="7"/>
-      <node ref="IC1" pin="24"/>
-    </net>
-    <net code="7" name="/Base Arduino/CH0_PEDAL_SIG">
-      <node ref="P4" pin="6"/>
-      <node ref="R7" pin="2"/>
+    <net code="1" name="/Base Arduino/CH0_PEDAL_SIG">
+      <node ref="P4" pin="4"/>
       <node ref="U3" pin="12"/>
       <node ref="IC1" pin="23"/>
+      <node ref="R7" pin="2"/>
     </net>
-    <net code="8" name="/Connectors/CH1_OUT">
+    <net code="2" name="/Base Arduino/CH1_PEDAL_SIG">
+      <node ref="U3" pin="1"/>
+      <node ref="R6" pin="2"/>
+      <node ref="P4" pin="5"/>
+      <node ref="IC1" pin="24"/>
+    </net>
+    <net code="3" name="/Base Arduino/RESET">
+      <node ref="R4" pin="2"/>
+      <node ref="P1" pin="5"/>
+      <node ref="IC1" pin="1"/>
+      <node ref="C7" pin="1"/>
+    </net>
+    <net code="4" name="/Connectors/CH1_OUT">
+      <node ref="P4" pin="2"/>
       <node ref="U2" pin="6"/>
       <node ref="U2" pin="7"/>
-      <node ref="P4" pin="3"/>
     </net>
-    <net code="9" name="/Connectors/CH0_OUT">
-      <node ref="P4" pin="2"/>
-      <node ref="U2" pin="2"/>
+    <net code="5" name="/Connectors/CH0_OUT">
       <node ref="U2" pin="1"/>
+      <node ref="P4" pin="1"/>
+      <node ref="U2" pin="2"/>
     </net>
-    <net code="10" name="/Isolator/CH1_MUXDEMUX_OUT">
+    <net code="6" name="/Isolator/CH1_MUXDEMUX_OUT">
       <node ref="U2" pin="5"/>
       <node ref="U3" pin="3"/>
     </net>
-    <net code="11" name="/Isolator/CH0_MUXDEMUX_OUT">
+    <net code="7" name="/Isolator/CH0_MUXDEMUX_OUT">
       <node ref="U2" pin="3"/>
       <node ref="U3" pin="13"/>
     </net>
-    <net code="12" name="/Base Arduino/SWITCH">
-      <node ref="IC1" pin="4"/>
+    <net code="8" name="/Base Arduino/SWITCH">
       <node ref="P3" pin="4"/>
+      <node ref="IC1" pin="4"/>
       <node ref="R5" pin="1"/>
     </net>
-    <net code="13" name="/Doubler_Inverter/+9V">
-      <node ref="C3" pin="1"/>
+    <net code="9" name="/Base Arduino/TX">
+      <node ref="P2" pin="1"/>
+      <node ref="IC1" pin="3"/>
+    </net>
+    <net code="10" name="/Base Arduino/RX">
+      <node ref="IC1" pin="2"/>
+      <node ref="P2" pin="2"/>
+    </net>
+    <net code="11" name="/Base Arduino/MOSI">
+      <node ref="IC1" pin="17"/>
+      <node ref="U3" pin="10"/>
+      <node ref="R1" pin="1"/>
+      <node ref="P1" pin="4"/>
+    </net>
+    <net code="12" name="/Base Arduino/LED1">
+      <node ref="P3" pin="2"/>
+      <node ref="R2" pin="1"/>
+    </net>
+    <net code="13" name="/Base Arduino/MISO">
+      <node ref="P1" pin="1"/>
+      <node ref="IC1" pin="18"/>
+    </net>
+    <net code="14" name="/Base Arduino/SCK">
+      <node ref="IC1" pin="19"/>
+      <node ref="P1" pin="3"/>
+    </net>
+    <net code="15" name="/Base Arduino/CH1_ARDUINO_SIG">
+      <node ref="C8" pin="1"/>
+      <node ref="R9" pin="1"/>
+      <node ref="U3" pin="5"/>
+    </net>
+    <net code="16" name="/Doubler_Inverter/+9V">
+      <node ref="D2" pin="1"/>
       <node ref="U2" pin="8"/>
-      <node ref="D2" pin="2"/>
+      <node ref="C3" pin="1"/>
     </net>
-    <net code="14" name="/Doubler_Inverter/-5V">
+    <net code="17" name="/Base Arduino/CH0_ARDUINO_SIG">
+      <node ref="U3" pin="14"/>
+      <node ref="R8" pin="1"/>
+      <node ref="C9" pin="1"/>
+    </net>
+    <net code="18" name="/Doubler_Inverter/-5V">
       <node ref="U2" pin="4"/>
-      <node ref="C4" pin="1"/>
       <node ref="U1" pin="5"/>
+      <node ref="C4" pin="1"/>
     </net>
-    <net code="15" name="+5V">
-      <node ref="R4" pin="1"/>
-      <node ref="U3" pin="16"/>
-      <node ref="P3" pin="5"/>
-      <node ref="P4" pin="1"/>
+    <net code="19" name="/Base Arduino/LED2">
+      <node ref="P3" pin="3"/>
+      <node ref="R3" pin="1"/>
+    </net>
+    <net code="20" name="+5V">
       <node ref="R7" pin="1"/>
+      <node ref="R4" pin="1"/>
+      <node ref="C10" pin="1"/>
       <node ref="R6" pin="1"/>
-      <node ref="D1" pin="1"/>
-      <node ref="IC1" pin="7"/>
       <node ref="IC1" pin="20"/>
+      <node ref="P1" pin="2"/>
+      <node ref="IC1" pin="7"/>
+      <node ref="U3" pin="16"/>
       <node ref="U1" pin="8"/>
-      <node ref="P4" pin="8"/>
+      <node ref="D1" pin="2"/>
+      <node ref="P3" pin="5"/>
+      <node ref="P4" pin="6"/>
     </net>
-    <net code="16" name="GNDREF">
-      <node ref="P3" pin="1"/>
-      <node ref="C9" pin="2"/>
-      <node ref="C7" pin="2"/>
-      <node ref="IC1" pin="22"/>
-      <node ref="C6" pin="1"/>
-      <node ref="IC1" pin="8"/>
-      <node ref="C8" pin="2"/>
-      <node ref="R5" pin="2"/>
-      <node ref="C5" pin="1"/>
-      <node ref="U3" pin="7"/>
-      <node ref="U1" pin="3"/>
-      <node ref="U3" pin="6"/>
-      <node ref="U3" pin="8"/>
-      <node ref="P4" pin="5"/>
-      <node ref="R1" pin="2"/>
-      <node ref="P4" pin="4"/>
-      <node ref="C3" pin="2"/>
+    <net code="21" name="GNDREF">
+      <node ref="P4" pin="3"/>
       <node ref="C4" pin="2"/>
+      <node ref="R5" pin="2"/>
+      <node ref="P1" pin="6"/>
+      <node ref="P3" pin="1"/>
+      <node ref="C7" pin="2"/>
+      <node ref="C9" pin="2"/>
+      <node ref="C8" pin="2"/>
+      <node ref="IC1" pin="22"/>
+      <node ref="IC1" pin="8"/>
+      <node ref="U1" pin="3"/>
+      <node ref="C6" pin="1"/>
+      <node ref="C5" pin="1"/>
+      <node ref="C3" pin="2"/>
+      <node ref="U3" pin="8"/>
+      <node ref="C10" pin="2"/>
+      <node ref="R1" pin="2"/>
+      <node ref="U3" pin="6"/>
+      <node ref="U3" pin="7"/>
       <node ref="U3" pin="9"/>
     </net>
-    <net code="17" name="Net-(C2-Pad1)">
-      <node ref="D1" pin="2"/>
+    <net code="22" name="Net-(C2-Pad1)">
       <node ref="C2" pin="1"/>
-      <node ref="D2" pin="1"/>
+      <node ref="D2" pin="2"/>
+      <node ref="D1" pin="1"/>
     </net>
-    <net code="18" name="Net-(C1-Pad1)">
-      <node ref="C1" pin="1"/>
+    <net code="23" name="Net-(C1-Pad1)">
       <node ref="C2" pin="2"/>
       <node ref="U1" pin="2"/>
+      <node ref="C1" pin="1"/>
     </net>
-    <net code="19" name="Net-(C1-Pad2)">
+    <net code="24" name="Net-(C1-Pad2)">
       <node ref="U1" pin="4"/>
       <node ref="C1" pin="2"/>
     </net>
-    <net code="20" name="Net-(U1-Pad6)">
+    <net code="25" name="Net-(U1-Pad6)">
       <node ref="U1" pin="6"/>
     </net>
-    <net code="21" name="Net-(U1-Pad7)">
+    <net code="26" name="Net-(U1-Pad7)">
       <node ref="U1" pin="7"/>
     </net>
-    <net code="22" name="Net-(U3-Pad2)">
+    <net code="27" name="Net-(U3-Pad2)">
       <node ref="U3" pin="2"/>
     </net>
-    <net code="23" name="Net-(U3-Pad4)">
+    <net code="28" name="Net-(U3-Pad4)">
       <node ref="U3" pin="4"/>
     </net>
-    <net code="24" name="Net-(U3-Pad11)">
+    <net code="29" name="Net-(U3-Pad11)">
       <node ref="U3" pin="11"/>
     </net>
-    <net code="25" name="Net-(U3-Pad15)">
+    <net code="30" name="Net-(U3-Pad15)">
       <node ref="U3" pin="15"/>
     </net>
-    <net code="26" name="Net-(IC1-Pad27)">
-      <node ref="IC1" pin="27"/>
+    <net code="31" name="Net-(IC1-Pad13)">
+      <node ref="R3" pin="2"/>
+      <node ref="IC1" pin="13"/>
     </net>
-    <net code="27" name="Net-(IC1-Pad28)">
-      <node ref="IC1" pin="28"/>
-    </net>
-    <net code="28" name="Net-(IC1-Pad18)">
-      <node ref="IC1" pin="18"/>
-    </net>
-    <net code="29" name="Net-(IC1-Pad19)">
-      <node ref="IC1" pin="19"/>
-    </net>
-    <net code="30" name="Net-(IC1-Pad14)">
-      <node ref="IC1" pin="14"/>
-    </net>
-    <net code="31" name="Net-(IC1-Pad12)">
-      <node ref="IC1" pin="12"/>
+    <net code="32" name="Net-(IC1-Pad12)">
       <node ref="R2" pin="2"/>
+      <node ref="IC1" pin="12"/>
     </net>
-    <net code="32" name="Net-(IC1-Pad26)">
-      <node ref="IC1" pin="26"/>
-    </net>
-    <net code="33" name="Net-(IC1-Pad11)">
-      <node ref="IC1" pin="11"/>
-    </net>
-    <net code="34" name="Net-(IC1-Pad6)">
-      <node ref="IC1" pin="6"/>
-    </net>
-    <net code="35" name="Net-(IC1-Pad5)">
-      <node ref="IC1" pin="5"/>
-    </net>
-    <net code="36" name="Net-(IC1-Pad3)">
-      <node ref="IC1" pin="3"/>
-    </net>
-    <net code="37" name="Net-(IC1-Pad2)">
-      <node ref="IC1" pin="2"/>
-    </net>
-    <net code="38" name="Net-(IC1-Pad25)">
-      <node ref="IC1" pin="25"/>
-    </net>
-    <net code="39" name="Net-(IC1-Pad16)">
-      <node ref="IC1" pin="16"/>
-      <node ref="R9" pin="2"/>
-    </net>
-    <net code="40" name="Net-(IC1-Pad15)">
-      <node ref="IC1" pin="15"/>
-      <node ref="R8" pin="2"/>
-    </net>
-    <net code="41" name="Net-(IC1-Pad21)">
-      <node ref="IC1" pin="21"/>
-    </net>
-    <net code="42" name="Net-(C6-Pad2)">
-      <node ref="IC1" pin="10"/>
+    <net code="33" name="Net-(C6-Pad2)">
       <node ref="C6" pin="2"/>
       <node ref="X1" pin="1"/>
+      <node ref="IC1" pin="10"/>
     </net>
-    <net code="43" name="Net-(C5-Pad2)">
+    <net code="34" name="Net-(C5-Pad2)">
       <node ref="IC1" pin="9"/>
-      <node ref="X1" pin="2"/>
       <node ref="C5" pin="2"/>
+      <node ref="X1" pin="2"/>
     </net>
-    <net code="44" name="Net-(C7-Pad1)">
-      <node ref="C7" pin="1"/>
-      <node ref="R4" pin="2"/>
-      <node ref="IC1" pin="1"/>
+    <net code="35" name="Net-(IC1-Pad15)">
+      <node ref="R8" pin="2"/>
+      <node ref="IC1" pin="15"/>
     </net>
-    <net code="45" name="Net-(IC1-Pad13)">
-      <node ref="IC1" pin="13"/>
-      <node ref="R3" pin="2"/>
+    <net code="36" name="Net-(IC1-Pad16)">
+      <node ref="R9" pin="2"/>
+      <node ref="IC1" pin="16"/>
+    </net>
+    <net code="37" name="Net-(IC1-Pad27)">
+      <node ref="IC1" pin="27"/>
+    </net>
+    <net code="38" name="Net-(IC1-Pad28)">
+      <node ref="IC1" pin="28"/>
+    </net>
+    <net code="39" name="Net-(IC1-Pad21)">
+      <node ref="IC1" pin="21"/>
+    </net>
+    <net code="40" name="Net-(IC1-Pad26)">
+      <node ref="IC1" pin="26"/>
+    </net>
+    <net code="41" name="Net-(IC1-Pad11)">
+      <node ref="IC1" pin="11"/>
+    </net>
+    <net code="42" name="Net-(IC1-Pad5)">
+      <node ref="IC1" pin="5"/>
+    </net>
+    <net code="43" name="Net-(IC1-Pad6)">
+      <node ref="IC1" pin="6"/>
+    </net>
+    <net code="44" name="Net-(IC1-Pad14)">
+      <node ref="IC1" pin="14"/>
+    </net>
+    <net code="45" name="Net-(IC1-Pad25)">
+      <node ref="IC1" pin="25"/>
     </net>
   </nets>
 </export>
