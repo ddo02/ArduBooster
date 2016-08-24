@@ -99,17 +99,17 @@ Wire Wire Line
 	5950 2800 6500 2800
 Wire Wire Line
 	4400 4700 5350 4700
-Text HLabel 5550 2150 1    60   Output ~ 0
+Text HLabel 5550 2150 1    60   Input ~ 0
 +9V
 Text HLabel 6500 2800 2    60   Output ~ 0
 CH0_OUT
 Text HLabel 5550 3500 3    60   Output ~ 0
 -5V
-Text HLabel 4400 2700 0    60   Output ~ 0
+Text HLabel 4400 2700 0    60   Input ~ 0
 CH0_MUXDEMUX_OUT
-Text HLabel 4400 4700 0    60   Output ~ 0
+Text HLabel 4400 4700 0    60   Input ~ 0
 CH1_MUXDEMUX_OUT
-Text HLabel 5550 4200 1    60   Output ~ 0
+Text HLabel 5550 4200 1    60   Input ~ 0
 +9V
 Text HLabel 6500 4800 2    60   Output ~ 0
 CH1_OUT
