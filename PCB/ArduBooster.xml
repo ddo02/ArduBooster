@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/ddo/ArduBooster/PCB/ArduBooster.sch</source>
-    <date>Qui 25 Ago 2016 14:28:21 BRT</date>
+    <date>Qui 25 Ago 2016 17:02:36 BRT</date>
     <tool>Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -191,7 +191,7 @@
     </comp>
     <comp ref="X1">
       <value>CRYSTAL</value>
-      <footprint>Crystals:Crystal_HC50-U_Vertical</footprint>
+      <footprint>Crystals:HC-49V</footprint>
       <libsource lib="device" part="Crystal"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>54D7F8BC</tstamp>
