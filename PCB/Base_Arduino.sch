@@ -212,8 +212,6 @@ $EndComp
 NoConn ~ 4600 4750
 NoConn ~ 4600 4650
 NoConn ~ 4600 4550
-NoConn ~ 4600 3700
-NoConn ~ 4600 3800
 NoConn ~ 4600 3900
 NoConn ~ 4600 4000
 NoConn ~ 4600 2650
@@ -307,9 +305,9 @@ F 3 "" H 7100 2600 60  0000 C CNN
 $EndComp
 Text HLabel 5250 4450 2    60   Input ~ 0
 SWITCH
-Text HLabel 5450 4000 2    60   Input ~ 0
+Text HLabel 5300 3600 2    60   Input ~ 0
 CH1_PEDAL_SIG
-Text HLabel 5450 3850 2    60   Input ~ 0
+Text HLabel 5300 3500 2    60   Input ~ 0
 CH0_PEDAL_SIG
 Text HLabel 5650 5500 2    60   Output ~ 0
 LED1
@@ -363,7 +361,7 @@ MISO
 Text HLabel 4200 2200 0    60   Output ~ 0
 MOSI
 Wire Wire Line
-	2550 5150 2550 4850
+	2550 4850 2550 5150
 Wire Wire Line
 	2550 4850 2700 4850
 Wire Wire Line
@@ -432,19 +430,9 @@ Connection ~ 5050 4450
 Wire Wire Line
 	5050 4900 5050 5200
 Wire Wire Line
-	5100 3850 5450 3850
+	4600 3500 5300 3500
 Wire Wire Line
-	5100 2300 5100 3850
-Wire Wire Line
-	4900 4000 5450 4000
-Wire Wire Line
-	4900 2300 4900 4000
-Wire Wire Line
-	4600 3500 5100 3500
-Connection ~ 5100 3500
-Wire Wire Line
-	4600 3600 4900 3600
-Connection ~ 4900 3600
+	4600 3600 5300 3600
 Wire Wire Line
 	4900 1850 4900 2000
 Wire Wire Line
@@ -463,14 +451,14 @@ Wire Wire Line
 Wire Wire Line
 	6650 1650 7650 1650
 Wire Wire Line
-	7300 2500 6900 2500
+	6900 2500 7300 2500
 Wire Wire Line
 	6900 2500 6900 2350
 Wire Wire Line
 	7100 2600 7100 2500
 Connection ~ 7100 2500
 Wire Wire Line
-	7300 2350 7300 2500
+	7300 2500 7300 2350
 Wire Wire Line
 	7300 1650 7300 2050
 Wire Wire Line
@@ -523,4 +511,18 @@ Wire Wire Line
 	4900 4250 4600 4250
 Wire Wire Line
 	4600 4350 4900 4350
+Wire Wire Line
+	5100 2300 5100 3500
+Connection ~ 5100 3500
+Wire Wire Line
+	4900 3600 4900 2300
+Connection ~ 4900 3600
+Text HLabel 5300 3700 2    60   Input ~ 0
+CH0_ARDUINO_SIG
+Text HLabel 5300 3800 2    60   Input ~ 0
+CH1_ARDUINO_SIG
+Wire Wire Line
+	5300 3700 4600 3700
+Wire Wire Line
+	4600 3800 5300 3800
 $EndSCHEMATC
