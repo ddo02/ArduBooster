@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/ddo/ArduBooster/PCB/ArduBooster.sch)
-    (date "Qui 25 Ago 2016 14:23:10 BRT")
+    (date "Qui 25 Ago 2016 14:28:18 BRT")
     (tool "Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -252,6 +252,7 @@
       (tstamp 57BC9625))
     (comp (ref R10)
       (value 1M)
+      (footprint Discret:R3)
       (libsource (lib device) (part R))
       (sheetpath (names "/Base Arduino/") (tstamps /54D7EFEF/))
       (tstamp 57BF3972)))

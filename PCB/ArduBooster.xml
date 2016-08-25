@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/ddo/ArduBooster/PCB/ArduBooster.sch</source>
-    <date>Qui 25 Ago 2016 14:23:14 BRT</date>
+    <date>Qui 25 Ago 2016 14:28:21 BRT</date>
     <tool>Eeschema 4.0.2+e4-6225~38~ubuntu16.04.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -296,6 +296,7 @@
     </comp>
     <comp ref="R10">
       <value>1M</value>
+      <footprint>Discret:R3</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Base Arduino/" tstamps="/54D7EFEF/"/>
       <tstamp>57BF3972</tstamp>
