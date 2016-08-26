@@ -510,13 +510,9 @@ Wire Wire Line
 	4900 3600 4900 2300
 Connection ~ 4900 3600
 Text HLabel 5300 3700 2    60   Input ~ 0
-CH0_ARDUINO_SIG
+CH0_OUT
 Text HLabel 5300 3800 2    60   Input ~ 0
-CH1_ARDUINO_SIG
-Wire Wire Line
-	5300 3700 4600 3700
-Wire Wire Line
-	4600 3800 5300 3800
+CH1_OUT
 Wire Wire Line
 	6200 2950 6200 3250
 Wire Wire Line
@@ -542,4 +538,8 @@ Connection ~ 6350 2950
 Wire Wire Line
 	6350 3450 6350 3650
 Connection ~ 6350 3650
+Wire Wire Line
+	4600 3700 5300 3700
+Wire Wire Line
+	5300 3800 4600 3800
 $EndSCHEMATC
