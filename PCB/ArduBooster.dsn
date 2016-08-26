@@ -21,8 +21,8 @@
       )
     )
     (boundary
-      (path pcb 0  180594 -36830  110490 -36830  110490 -91948  180594 -91948
-            180594 -36830  180594 -36830)
+      (path pcb 0  110490 -128778  110490 -74168  180594 -74168  180594 -128778
+            110490 -128778  110490 -128778)
     )
     (via "Via[0-1]_1000:400_um")
     (rule
@@ -34,67 +34,67 @@
   )
   (placement
     (component Connect:1pin
-      (place H3 114046 -40386 front 0)
-      (place H1 177038 -40386 front 0)
-      (place H2 177038 -88392 front 0)
-      (place H4 114046 -88392 front 0)
+      (place H3 114046 -77724 front 0)
+      (place H1 177038 -77724 front 0)
+      (place H2 177038 -125222 front 0)
+      (place H4 114046 -125222 front 0)
     )
     (component "Housings_DIP:DIP-8_W7.62mm_LongPads"
-      (place U1 120142 -41402 front 0 (PN ICL7660))
-      (place U2 132588 -41402 front 0 (PN LM358))
+      (place U1 120142 -78740 front 0 (PN ICL7660))
+      (place U2 132588 -78740 front 0 (PN LM358))
     )
     (component Capacitors_ThroughHole:C_Rect_L7_W4.5_P5
-      (place C1 114808 -50292 front 90 (PN 1u))
-      (place C2 114808 -58928 front 90 (PN 1u))
-      (place C3 120904 -58928 front 90 (PN 1u))
-      (place C4 127000 -58928 front 90 (PN 1u))
-      (place C7 114808 -83058 front 90 (PN 1u))
+      (place C1 114808 -87630 front 90 (PN 1u))
+      (place C2 114808 -96266 front 90 (PN 1u))
+      (place C3 120904 -96266 front 90 (PN 1u))
+      (place C4 127000 -96266 front 90 (PN 1u))
+      (place C7 114808 -120396 front 90 (PN 1u))
     )
     (component Capacitors_ThroughHole:C_Rect_L7_W2_P5
-      (place C5 131064 -86360 front 0 (PN 22p))
-      (place C6 156972 -86360 front 180 (PN 22p))
+      (place C5 131064 -123698 front 0 (PN 22p))
+      (place C6 156972 -123698 front 180 (PN 22p))
     )
     (component Capacitors_ThroughHole:C_Rect_L7_W2.5_P5
-      (place C8 139954 -58928 front 90 (PN 100n))
-      (place C9 132842 -58928 front 90 (PN 100n))
-      (place C10 173228 -66040 front 180 (PN 100n))
+      (place C8 139954 -96266 front 90 (PN 100n))
+      (place C9 132842 -96266 front 90 (PN 100n))
+      (place C10 173228 -103378 front 180 (PN 100n))
     )
     (component Discret:D3
-      (place D1 117094 -62992 front 0 (PN 1n4007))
-      (place D2 127254 -62992 front 0 (PN 1n4007))
+      (place D1 117094 -100330 front 0 (PN 1n4007))
+      (place D2 127254 -100330 front 0 (PN 1n4007))
     )
     (component "Housings_DIP:DIP-28_W7.62mm_LongPads"
-      (place IC1 122682 -74168 front 90 (PN "ATMEGA328-P"))
+      (place IC1 122682 -111506 front 90 (PN "ATMEGA328-P"))
     )
     (component Pin_Headers:Pin_Header_Straight_2x03
-      (place P1 120142 -79756 front 0 (PN ISP))
+      (place P1 120142 -117094 front 0 (PN ISP))
     )
     (component Pin_Headers:Pin_Header_Straight_1x02
-      (place P2 131572 -80010 front 270 (PN "DEBUG TX/RX"))
+      (place P2 131572 -117348 front 270 (PN "DEBUG TX/RX"))
     )
     (component "Connect:Wafer_Horizontal15x5.8x7RM2.5-5"
-      (place P3 170942 -81280 front 90 (PN CONTROL))
+      (place P3 168910 -118618 front 90 (PN CONTROL))
     )
     (component "Connectors_Molex:Molex_MiniFit-JR-5569-06A1_2x03x4.20mm_Angled"
-      (place P4 166116 -46990 front 270 (PN MAIN_CONN))
+      (place P4 166116 -84328 front 270 (PN MAIN_CONN))
     )
     (component Discret:R3
-      (place R1 161036 -76454 front 90 (PN 10k))
-      (place R2 154432 -77978 front 180 (PN 470))
-      (place R3 154432 -80772 front 180 (PN 470))
-      (place R4 114808 -70358 front 270 (PN 10k))
-      (place R5 164084 -76454 front 270 (PN 10k))
-      (place R6 164084 -65024 front 90 (PN 10k))
-      (place R7 161036 -65024 front 90 (PN 10k))
-      (place R8 136398 -56642 front 90 (PN 10k))
-      (place R9 143510 -56642 front 90 (PN 10k))
-      (place R10 144018 -80264 front 0 (PN 1M))
+      (place R1 161036 -113792 front 90 (PN 10k))
+      (place R2 154432 -115316 front 180 (PN 470))
+      (place R3 154432 -118110 front 180 (PN 470))
+      (place R4 114808 -107696 front 270 (PN 10k))
+      (place R5 164084 -113792 front 270 (PN 10k))
+      (place R6 164084 -102362 front 90 (PN 10k))
+      (place R7 161036 -102362 front 90 (PN 10k))
+      (place R8 136398 -93980 front 90 (PN 10k))
+      (place R9 143510 -93980 front 90 (PN 10k))
+      (place R10 144018 -117602 front 0 (PN 1M))
     )
     (component "Housings_DIP:DIP-16_W7.62mm_LongPads"
-      (place U3 146812 -41402 front 0 (PN 4052))
+      (place U3 146812 -78740 front 0 (PN 4052))
     )
     (component "Crystals:HC-49V"
-      (place X1 146558 -86360 front 180 (PN CRYSTAL))
+      (place X1 146558 -123698 front 180 (PN CRYSTAL))
     )
   )
   (library
@@ -598,10 +598,9 @@
       /Isolator/CH0_MUXDEMUX_OUT /Isolator/CH1_MUXDEMUX_OUT GNDREF "Net-(C1-Pad1)"
       "Net-(C1-Pad2)" "Net-(C2-Pad1)" "Net-(C5-Pad2)" "Net-(C6-Pad2)" "Net-(IC1-Pad11)"
       "Net-(IC1-Pad12)" "Net-(IC1-Pad13)" "Net-(IC1-Pad14)" "Net-(IC1-Pad15)"
-      "Net-(IC1-Pad16)" "Net-(IC1-Pad21)" "Net-(IC1-Pad25)" "Net-(IC1-Pad26)"
-      "Net-(IC1-Pad27)" "Net-(IC1-Pad28)" "Net-(IC1-Pad5)" "Net-(IC1-Pad6)"
-      "Net-(U1-Pad6)" "Net-(U1-Pad7)" "Net-(U3-Pad11)" "Net-(U3-Pad15)" "Net-(U3-Pad2)"
-      "Net-(U3-Pad4)"
+      "Net-(IC1-Pad16)" "Net-(IC1-Pad21)" "Net-(IC1-Pad27)" "Net-(IC1-Pad28)"
+      "Net-(IC1-Pad5)" "Net-(IC1-Pad6)" "Net-(U1-Pad6)" "Net-(U1-Pad7)" "Net-(U3-Pad11)"
+      "Net-(U3-Pad15)" "Net-(U3-Pad2)" "Net-(U3-Pad4)"
       (circuit
         (use_via Via[0-1]_1000:400_um)
       )
