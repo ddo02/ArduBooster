@@ -1,9 +1,9 @@
-(kicad_pcb (version 4) (host pcbnew 4.0.2+e4-6225~38~ubuntu16.04.1-stable)
+(kicad_pcb (version 4) (host pcbnew 4.0.2+e4-6225~38~ubuntu14.04.1-stable)
 
   (general
     (links 81)
     (no_connects 0)
-    (area 110.439999 36.779999 180.644001 91.998001)
+    (area 110.083 36.113 180.917001 92.261)
     (thickness 1.6)
     (drawings 4)
     (tracks 302)
@@ -65,7 +65,7 @@
     (grid_origin 73.914 42.672)
     (visible_elements FFFFFFFF)
     (pcbplotparams
-      (layerselection 0x00000_80000000)
+      (layerselection 0x31030_80000001)
       (usegerberextensions false)
       (excludeedgelayer true)
       (linewidth 0.100000)
@@ -84,9 +84,9 @@
       (plotinvisibletext false)
       (padsonsilk true)
       (subtractmaskfromsilk false)
-      (outputformat 4)
+      (outputformat 1)
       (mirror false)
-      (drillshape 1)
+      (drillshape 0)
       (scaleselection 1)
       (outputdirectory /home/ddo/tmp/))
   )
