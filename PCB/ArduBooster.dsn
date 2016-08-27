@@ -1,9 +1,9 @@
-(pcb /home/ddo/ArduBooster/PCB/ArduBooster.dsn
+(pcb /media/ddo02/src/ArduBooster/PCB/ArduBooster.dsn
   (parser
     (string_quote ")
     (space_in_quoted_tokens on)
     (host_cad "KiCad's Pcbnew")
-    (host_version "4.0.2+e4-6225~38~ubuntu16.04.1-stable")
+    (host_version "4.0.2+e4-6225~38~ubuntu14.04.1-stable")
   )
   (resolution um 10)
   (unit um)
@@ -57,7 +57,7 @@
     (component Capacitors_ThroughHole:C_Rect_L7_W2.5_P5
       (place C8 139954 -96266 front 90 (PN 100n))
       (place C9 132842 -96266 front 90 (PN 100n))
-      (place C10 173228 -103378 front 180 (PN 100n))
+      (place C10 173228 -103378 front 180 (PN 100nF))
     )
     (component Discret:D3
       (place D1 117094 -100330 front 0 (PN 1n4007))
@@ -486,10 +486,10 @@
       (pins C6-2 IC1-10 R10-2 X1-1)
     )
     (net "/Base Arduino/CH1_ARDUINO_SIG"
-      (pins C8-1 IC1-26 R9-1 U3-5)
+      (pins C8-1 R9-1 U3-5)
     )
     (net "/Base Arduino/CH0_ARDUINO_SIG"
-      (pins C9-1 IC1-25 R8-1 U3-14)
+      (pins C9-1 R8-1 U3-14)
     )
     (net +5V
       (pins U1-8 C10-1 D1-2 IC1-7 IC1-20 P1-2 P3-5 P4-6 R4-1 R6-1 R7-1 U3-16)
@@ -535,12 +535,6 @@
     )
     (net "Net-(IC1-Pad28)"
       (pins IC1-28)
-    )
-    (net /Connectors/CH0_OUT
-      (pins P4-1 U2-1 U2-2)
-    )
-    (net /Connectors/CH1_OUT
-      (pins P4-2 U2-6 U2-7)
     )
     (net "/Base Arduino/LED1"
       (pins P3-2 R2-1)
@@ -590,17 +584,24 @@
     (net "/Base Arduino/SCK"
       (pins IC1-19 P1-3)
     )
-    (class kicad_default "" +5V "/Base Arduino/CH0_ARDUINO_SIG" "/Base Arduino/CH0_PEDAL_SIG"
-      "/Base Arduino/CH1_ARDUINO_SIG" "/Base Arduino/CH1_PEDAL_SIG" "/Base Arduino/LED1"
-      "/Base Arduino/LED2" "/Base Arduino/MISO" "/Base Arduino/MOSI" "/Base Arduino/RESET"
-      "/Base Arduino/RX" "/Base Arduino/SCK" "/Base Arduino/SWITCH" "/Base Arduino/TX"
-      /Connectors/CH0_OUT /Connectors/CH1_OUT /Doubler_Inverter/+9V "/Doubler_Inverter/-5V"
-      /Isolator/CH0_MUXDEMUX_OUT /Isolator/CH1_MUXDEMUX_OUT GNDREF "Net-(C1-Pad1)"
-      "Net-(C1-Pad2)" "Net-(C2-Pad1)" "Net-(C5-Pad2)" "Net-(C6-Pad2)" "Net-(IC1-Pad11)"
-      "Net-(IC1-Pad12)" "Net-(IC1-Pad13)" "Net-(IC1-Pad14)" "Net-(IC1-Pad15)"
-      "Net-(IC1-Pad16)" "Net-(IC1-Pad21)" "Net-(IC1-Pad27)" "Net-(IC1-Pad28)"
-      "Net-(IC1-Pad5)" "Net-(IC1-Pad6)" "Net-(U1-Pad6)" "Net-(U1-Pad7)" "Net-(U3-Pad11)"
-      "Net-(U3-Pad15)" "Net-(U3-Pad2)" "Net-(U3-Pad4)"
+    (net "/Base Arduino/CH0_OUT"
+      (pins IC1-25 P4-1 U2-1 U2-2)
+    )
+    (net "/Base Arduino/CH1_OUT"
+      (pins IC1-26 P4-2 U2-6 U2-7)
+    )
+    (class kicad_default "" +5V "/Base Arduino/CH0_ARDUINO_SIG" "/Base Arduino/CH0_OUT"
+      "/Base Arduino/CH0_PEDAL_SIG" "/Base Arduino/CH1_ARDUINO_SIG" "/Base Arduino/CH1_OUT"
+      "/Base Arduino/CH1_PEDAL_SIG" "/Base Arduino/LED1" "/Base Arduino/LED2"
+      "/Base Arduino/MISO" "/Base Arduino/MOSI" "/Base Arduino/RESET" "/Base Arduino/RX"
+      "/Base Arduino/SCK" "/Base Arduino/SWITCH" "/Base Arduino/TX" /Connectors/CH0_OUT
+      /Connectors/CH1_OUT /Doubler_Inverter/+9V "/Doubler_Inverter/-5V" /Isolator/CH0_MUXDEMUX_OUT
+      /Isolator/CH1_MUXDEMUX_OUT GNDREF "Net-(C1-Pad1)" "Net-(C1-Pad2)" "Net-(C2-Pad1)"
+      "Net-(C5-Pad2)" "Net-(C6-Pad2)" "Net-(IC1-Pad11)" "Net-(IC1-Pad12)"
+      "Net-(IC1-Pad13)" "Net-(IC1-Pad14)" "Net-(IC1-Pad15)" "Net-(IC1-Pad16)"
+      "Net-(IC1-Pad21)" "Net-(IC1-Pad27)" "Net-(IC1-Pad28)" "Net-(IC1-Pad5)"
+      "Net-(IC1-Pad6)" "Net-(U1-Pad6)" "Net-(U1-Pad7)" "Net-(U3-Pad11)" "Net-(U3-Pad15)"
+      "Net-(U3-Pad2)" "Net-(U3-Pad4)"
       (circuit
         (use_via Via[0-1]_1000:400_um)
       )
