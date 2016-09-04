@@ -59,6 +59,8 @@ int sensorPot1CutValue = 0;
 // 2 -> boost 2 (100%)
 int mode = 0;
 
+PID fb_pid = PID(1.0, 0.0, 0.0);
+
 // Arduino setup
 void setup() {
   
