@@ -1,6 +1,8 @@
 #include <EEPROM.h>
 #include <avr/wdt.h>
 
+#include "pid.h"
+
 // TODO LIST:
 // Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
 // Auto find mon sensor value (today, is readed is setup function)
