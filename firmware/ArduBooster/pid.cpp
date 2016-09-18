@@ -4,30 +4,40 @@
 
 PID::PID(double p, double i, double d)
 {
-  // default min/max output (to works with PWM)
-  mMinOut = 0;
-  mMaxOut = 255;
+  mKp = p;
+  mKi = i;
+  mKd = d;
   
-  mSampleTime = 50; // ms
+  mISum = 0;
   
-  mLastTime = millis() - mSampleTime;
+  mFirstRun = true;
 }
 
 double PID::process(int input_val, int setpoint_val)
 {
+  if(mFirstRun) {
+    mFirstRun = false;
+    mLastTime = millis();
+    mLastInput = input_val;
+  }
   
-}
-
-bool PID::setLimits(int min_out, int max_out)
-{
-  if(min_out >= max_out) 
-    return false;
-  mMinOut = min_out;
-  mMaxOut = max_out;
-  return true;
-}
-
-void PID::setTime(int delta_time)
-{
+  float delta_time = (millis() - mLastTime) / 1000.0;
   
+  // "input to target" error
+  int error = setpoint_val - input_val;
+  
+  // P
+  double p = error * mKp;
+  
+  // I
+  mISum += error * mKi * delta_time;
+  
+  // D
+  double d = (mLastInput - input_val) * mKd / delta_time;
+  
+  mLastTime = millis();
+  mLastInput = input_val;
+  
+  // PID
+  return p + mISum + d;
 }

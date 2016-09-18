@@ -5,11 +5,12 @@
 
 // TODO LIST:
 // Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
-// Auto find mon sensor value (today, is readed is setup function)
-// Save max pesal value
-// *OK* Enable watchdog
-// Bypass when on idle
-// *OK* Lower engineering margin :) (10% to 5% [?])
+// Tests with POT pedal sensor
+// Auto find min sensor value (today, is readed is setup function)
+// *NOK* Save max pesal value * This can be a problem, if change the car
+// *OK* Enable watchdog * WD enabled
+// *NOK* Bypass when on idle * Not needed with PID control
+// *OK* Lower engineering margin :) (10% to 5% [?]) * 5%
 
 // Boost mode 1 correction values (to use with map function)
 const int MODE_1_MIN = 0;
@@ -22,6 +23,10 @@ const int MODE_2_MAX = 2046; // 100% (1023 to 2046)
 // Input signal pins, to read pedal position
 const int sensorPot0Pin = A0;
 const int sensorPot1Pin = A1;
+
+// Feedback signal pins, to read and correct output signal
+const int outputFeedback0Pin = A2;
+const int outputFeedback1Pin = A3;
 
 // Led mode pins
 const int ledPin0 = 6;
@@ -41,6 +46,10 @@ const int enableMuxPin = 11;
 int sensorPot0Value = 0;
 int sensorPot1Value = 0;
 
+// Feedback values
+int feedback0Value = 0;
+int feedback1Value = 0;
+
 // Maximum pedal value readed
 int sensorPot0ValueMax = 0;
 int sensorPot1ValueMax = 0;
@@ -59,7 +68,13 @@ int sensorPot1CutValue = 0;
 // 2 -> boost 2 (100%)
 int mode = 0;
 
-PID fb_pid = PID(1.0, 0.0, 0.0);
+// Feedback PID
+// Used to correct output signal
+float Kp = 1.0;
+float Ki = 0.0;
+float Kd = 0.0;
+PID fb_pid0 = PID(Kp, Ki, Kd);
+PID fb_pid1 = PID(Kp, Ki, Kd);
 
 // Arduino setup
 void setup() {
@@ -81,6 +96,9 @@ void setup() {
   
   //pinMode(sensorPot0Pin, INPUT_PULLUP);
   //pinMode(sensorPot1Pin, INPUT_PULLUP);
+  //pinMode(outputFeedback0Pin, INPUT_PULLUP);
+  //pinMode(outputFeedback1Pin, INPUT_PULLUP);
+  
   pinMode(ledPin0, OUTPUT);  
   pinMode(ledPin1, OUTPUT);
   pinMode(output0Pin, OUTPUT);
@@ -89,11 +107,19 @@ void setup() {
   pinMode(enableMuxPin, OUTPUT);
   
   // To avoid boost when pedal is not pressed
-  sensorPot0CutValue = analogRead(sensorPot0Pin);
-  sensorPot1CutValue = analogRead(sensorPot1Pin);
+  sensorPot0Value = analogRead(sensorPot0Pin);
+  sensorPot1Value = analogRead(sensorPot1Pin);
+  
   // Engineering margin of safety :)
   sensorPot0CutValue = sensorPot0CutValue * 1.05;
   sensorPot1CutValue = sensorPot1CutValue * 1.05;
+  
+  // Only (at setup) put the input value to output pin
+  // This will improves the PID
+  output0Value = map(sensorPot0Value, 0, 1023, 0, 255);
+  output1Value = map(sensorPot1Value, 0, 1023, 0, 255);
+  analogWrite(output0Pin, output0Value);
+  analogWrite(output1Pin, output1Value);
   
   showBoot();
   
@@ -107,7 +133,11 @@ void setup() {
 // Arduino main loop
 void loop() {
   
-  // read pedal values
+  // read feedback values (0-1023)
+  feedback0Value = analogRead(outputFeedback0Pin);
+  feedback1Value = analogRead(outputFeedback1Pin);
+  
+  // read pedal values (0-1023)
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
   
@@ -212,6 +242,32 @@ void loop() {
   }
   if(output1Value < 0) {
     output1Value = 0; 
+  }
+  
+  double correction0 = 1.0;
+  double correction1 = 1.0;
+  
+  if (true) {
+    correction0 = fb_pid0.process(map(feedback0Value, 0, 1023, 0, 255), output0Value);
+    correction1 = fb_pid1.process(map(feedback1Value, 0, 1023, 0, 255), output1Value);
+    
+    Serial.print("Ch0: ");
+    Serial.print(map(feedback0Value, 0, 1023, 0, 255));
+    Serial.print(" (");
+    Serial.print(output0Value);
+    Serial.print(") [");
+    Serial.print(correction0);
+    Serial.println("]");
+    
+    Serial.print("Ch1: ");
+    Serial.print(map(feedback1Value, 0, 1023, 0, 255));
+    Serial.print(" (");
+    Serial.print(output1Value);
+    Serial.print(") [");
+    Serial.print(correction1);
+    Serial.println("]");
+    
+    Serial.println();
   }
   
   analogWrite(output0Pin, output0Value);
