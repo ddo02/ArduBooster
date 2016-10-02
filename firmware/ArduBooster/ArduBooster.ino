@@ -9,8 +9,15 @@
 // Auto find min sensor value (today, is readed is setup function)
 // *NOK* Save max pesal value * This can be a problem, if change the car
 // *OK* Enable watchdog * WD enabled
-// *NOK* Bypass when on idle * Not needed with PID control
+// *NOK* Bypass when on idle * Not needed with PWM 10 bits
 // *OK* Lower engineering margin :) (10% to 5% [?]) * 5%
+
+// Enable/Disable serial debug
+const bool DEBUG = false;
+
+// Debug timer counter
+unsigned int dbg_time_count = 0;
+const unsigned long dbg_time = 50; // loops
 
 // Boost mode 1 correction values (to use with map function)
 const int MODE_1_MIN = 0;
@@ -19,6 +26,9 @@ const int MODE_1_MAX = 1535; // 50% (1023 to 1535)
 // Boost mode 2 correction values (to use with map function)
 const int MODE_2_MIN = 0;
 const int MODE_2_MAX = 2046; // 100% (1023 to 2046)
+
+// Max value to PWM
+const int MAX_PWM = 1023;
 
 // Input signal pins, to read pedal position
 const int sensorPot0Pin = A0;
@@ -70,11 +80,30 @@ int mode = 0;
 
 // Feedback PID
 // Used to correct output signal
-float Kp = 1.0;
-float Ki = 0.0;
+float Kp = 0.5;
+float Ki = 0.5;
 float Kd = 0.0;
 PID fb_pid0 = PID(Kp, Ki, Kd);
 PID fb_pid1 = PID(Kp, Ki, Kd);
+
+// Configure digital pins 9 and 10 as 10-bit PWM outputs.
+// With this config, PWM frequency is about 15khz
+void setupPWM10bits() {
+    DDRB |= _BV(PB1) | _BV(PB2);        // Set pins as outputs
+    TCCR1A = _BV(COM1A1) | _BV(COM1B1)  // Non-inverting PWM
+        | _BV(WGM11);                   // Mode 14: fast PWM, TOP=ICR1
+    TCCR1B = _BV(WGM13) | _BV(WGM12)
+        | _BV(CS10);                    // No prescaling
+    ICR1 = 0x400;                       // TOP counter value (1024/10bits)
+}
+
+// 10-bit version of analogWrite()
+void analogWrite10b(uint8_t pin, uint16_t val) {
+    switch (pin) {
+        case  9: OCR1A = val; break;
+        case 10: OCR1B = val; break;
+    }
+}
 
 // Arduino setup
 void setup() {
@@ -87,10 +116,12 @@ void setup() {
   // http://playground.arduino.cc/Main/TimerPWMCheatsheet
   // Online tool to calculate RC low pass filter:
   // http://sim.okawa-denshi.jp/en/PWMtool.php
+  // *** Doesnt work with PWM 10-bit ***
   TCCR1B = TCCR1B & 0b11111000 | 0x01;
   
   // Init debug serial
   Serial.begin(9600);
+  Serial.println("Serial initialized!");
   
   // Configure pins mode
   
@@ -111,15 +142,17 @@ void setup() {
   sensorPot1Value = analogRead(sensorPot1Pin);
   
   // Engineering margin of safety :)
-  sensorPot0CutValue = sensorPot0CutValue * 1.05;
-  sensorPot1CutValue = sensorPot1CutValue * 1.05;
+  sensorPot0CutValue = sensorPot0Value * 1.05;
+  sensorPot1CutValue = sensorPot1Value * 1.05;
+  
+  setupPWM10bits();
   
   // Only (at setup) put the input value to output pin
   // This will improves the PID
-  output0Value = map(sensorPot0Value, 0, 1023, 0, 255);
-  output1Value = map(sensorPot1Value, 0, 1023, 0, 255);
-  analogWrite(output0Pin, output0Value);
-  analogWrite(output1Pin, output1Value);
+  output0Value = map(sensorPot0Value, 0, 1023, 0, MAX_PWM);
+  output1Value = map(sensorPot1Value, 0, 1023, 0, MAX_PWM);
+  analogWrite10b(output0Pin, output0Value);
+  analogWrite10b(output1Pin, output1Value);
   
   showBoot();
   
@@ -132,7 +165,7 @@ void setup() {
 
 // Arduino main loop
 void loop() {
-  
+
   // read feedback values (0-1023)
   feedback0Value = analogRead(outputFeedback0Pin);
   feedback1Value = analogRead(outputFeedback1Pin);
@@ -141,6 +174,7 @@ void loop() {
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
   
+  // Compute max read value
   if (sensorPot0Value > sensorPot0ValueMax) {
     sensorPot0ValueMax = sensorPot0Value;
   }
@@ -188,9 +222,9 @@ void loop() {
       tmpOut1 = sensorPot1ValueMax;
     }
     
-    // Prepare to PWN (0-255)
-    output0Value = map(tmpOut0, 0, 1023, 0, 255);
-    output1Value = map(tmpOut1, 0, 1023, 0, 255);
+    // Prepare to PWM
+    output0Value = map(tmpOut0, 0, 1023, 0, MAX_PWM);
+    output1Value = map(tmpOut1, 0, 1023, 0, MAX_PWM);
     
     
     //Serial.println(tmpOut0);
@@ -216,9 +250,9 @@ void loop() {
       tmpOut1 = sensorPot1ValueMax;
     }
     
-    // Prepare to PWN (0-255)    
-    output0Value = map(tmpOut0, 0, 1023, 0, 255);
-    output1Value = map(tmpOut1, 0, 1023, 0, 255);
+    // Prepare to PWM
+    output0Value = map(tmpOut0, 0, 1023, 0, MAX_PWM);
+    output1Value = map(tmpOut1, 0, 1023, 0, MAX_PWM);
     
   } 
   // Boost mode 0 (no boost) or pedal is in idle position
@@ -226,16 +260,17 @@ void loop() {
     
     //Serial.println("BOOST 0");
     
-    output0Value = map(sensorPot0Value, 0, 1023, 0, 255);
-    output1Value = map(sensorPot1Value, 0, 1023, 0, 255);
+    output0Value = map(sensorPot0Value, 0, 1023, 0, MAX_PWM);
+    output1Value = map(sensorPot1Value, 0, 1023, 0, MAX_PWM);
     
   }
   
-  if(output0Value > 255) {
-    output0Value = 255; 
+  // Normalizes output
+  if(output0Value > MAX_PWM) {
+    output0Value = MAX_PWM; 
   }
-  if(output1Value > 255) {
-    output1Value = 255; 
+  if(output1Value > MAX_PWM) {
+    output1Value = MAX_PWM; 
   }
   if(output0Value < 0) {
     output0Value = 0; 
@@ -244,34 +279,87 @@ void loop() {
     output1Value = 0; 
   }
   
-  double correction0 = 1.0;
-  double correction1 = 1.0;
+  // PID tests
+  if (false) {
+    
+    double correction0 = 1.0;
+    double correction1 = 1.0;
   
-  if (true) {
-    correction0 = fb_pid0.process(map(feedback0Value, 0, 1023, 0, 255), output0Value);
-    correction1 = fb_pid1.process(map(feedback1Value, 0, 1023, 0, 255), output1Value);
+    correction0 = fb_pid0.process(map(feedback0Value, 0, 1023, 0, MAX_PWM), output0Value); // have / want
+    correction1 = fb_pid1.process(map(feedback1Value, 0, 1023, 0, MAX_PWM), output1Value); // have / want
+
+    int tmp0 = output0Value;
+    int tmp1 = output1Value;
     
-    Serial.print("Ch0: ");
-    Serial.print(map(feedback0Value, 0, 1023, 0, 255));
-    Serial.print(" (");
-    Serial.print(output0Value);
-    Serial.print(") [");
-    Serial.print(correction0);
-    Serial.println("]");
+    output0Value += correction0;
+    output1Value += correction1;
     
-    Serial.print("Ch1: ");
-    Serial.print(map(feedback1Value, 0, 1023, 0, 255));
-    Serial.print(" (");
-    Serial.print(output1Value);
-    Serial.print(") [");
-    Serial.print(correction1);
-    Serial.println("]");
+    if(output0Value > MAX_PWM) {
+      output0Value = MAX_PWM; 
+    }
+    if(output1Value > MAX_PWM) {
+      output1Value = MAX_PWM; 
+    }
+    if(output0Value < 0) {
+      output0Value = 0; 
+    }
+    if(output1Value < 0) {
+      output1Value = 0; 
+    }
     
-    Serial.println();
+    if (DEBUG && isShowTime()) {
+      
+      //char tbs[16];
+      //sprintf(tbs, "P%4dR%4dT%4d", x, y, z);
+      
+      //Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      
+      /*
+      char buf[127];
+      sprintf(buf, "0:%d(%d)[%d]", 
+                    map(feedback0Value, 0, 1023, 0, MAX_PWM), 
+                    output0Value, 
+                    correction0);
+      
+      Serial.println(buf);
+      
+      char buf2[127];
+      sprintf(buf2, "1:%d(%d)[%d]", 
+                    map(feedback1Value, 0, 1023, 0, MAX_PWM), 
+                    output1Value, 
+                    correction1);
+      
+      Serial.println(buf2);
+      */
+      
+      Serial.print("CH0: ");
+      Serial.print(tmp0);
+      Serial.print("->");
+      Serial.print(output0Value);
+      Serial.print(" (");
+      Serial.print(map(feedback0Value, 0, 1023, 0, MAX_PWM));
+      Serial.print(" [");
+      Serial.print(correction0);
+      Serial.println("])");
+      
+      
+      Serial.print("CH1: ");
+      Serial.print(tmp1);
+      Serial.print("->");
+      Serial.print(output1Value);
+      Serial.print(" (");
+      Serial.print(map(feedback1Value, 0, 1023, 0, MAX_PWM));
+      Serial.print(" [");
+      Serial.print(correction1);
+      Serial.println("])");
+      
+      
+      //Serial.println("=================================");
+    }
   }
   
-  analogWrite(output0Pin, output0Value);
-  analogWrite(output1Pin, output1Value);
+  analogWrite10b(output0Pin, output0Value);
+  analogWrite10b(output1Pin, output1Value);
   
   showMode(mode);
   
@@ -279,10 +367,32 @@ void loop() {
   
   delay(10);
   
+  //Serial.print("Loop time: ");
+  //Serial.print(millis() - time);
+  //Serial.println("ms");
+  //time = millis();
+  
   digitalWrite(enableMuxPin, HIGH);
+  
   wdt_reset();
+  
+  tickDbgTime();
 }
 
+// Verifies if show debug in this execution loop
+bool isShowTime() {
+  return dbg_time_count == dbg_time;
+}
+
+// Debug time count
+void tickDbgTime() {
+  dbg_time_count += 1;
+  if (dbg_time_count > dbg_time) {
+    dbg_time_count = 0;
+  }
+}
+
+// Change to next mode and store in eeprom
 int nextMode() {
   
   int newVal = mode + 1;
@@ -294,6 +404,7 @@ int nextMode() {
   return newVal;
 }
 
+// Read mode from eeprom
 int readMode() {
   int value = EEPROM.read(0);
   
@@ -304,6 +415,7 @@ int readMode() {
   return value;
 }
 
+// Blink at startup
 void showBoot() {
 
   digitalWrite(ledPin0, HIGH);   
@@ -315,8 +427,10 @@ void showBoot() {
   digitalWrite(ledPin1, LOW);
 }
 
+// Show current mode with leds
 void showMode(int mode) {
   
+  // TODO: use switch
   if(mode == 0) {
     digitalWrite(ledPin0, LOW);   
     digitalWrite(ledPin1, LOW);
@@ -328,8 +442,3 @@ void showMode(int mode) {
     digitalWrite(ledPin1, HIGH);
   }
 }
-
-
-
-
-
