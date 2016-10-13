@@ -119,6 +119,9 @@ void setup() {
   // *** Doesnt work with PWM 10-bit ***
   TCCR1B = TCCR1B & 0b11111000 | 0x01;
   
+  // Enable ADC interrupt
+  ADCSRA |= B00001000;
+  
   // Init debug serial
   Serial.begin(9600);
   Serial.println("Serial initialized!");
@@ -137,11 +140,17 @@ void setup() {
   pinMode(buttonModePin, INPUT);
   pinMode(enableMuxPin, OUTPUT);
   
+  //TODO: delay needed? (first adc convertion)
+  //TODO: interruption?
+  
   // To avoid boost when pedal is not pressed
+  //TODO: do a mean
+  //TODO: auto find idle position
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
   
   // Engineering margin of safety :)
+  //TODO: smooth transition
   sensorPot0CutValue = sensorPot0Value * 1.05;
   sensorPot1CutValue = sensorPot1Value * 1.05;
   
@@ -154,14 +163,27 @@ void setup() {
   analogWrite10b(output0Pin, output0Value);
   analogWrite10b(output1Pin, output1Value);
   
+  // Change mux/demux to use arduino signal
+  digitalWrite(enableMuxPin, HIGH);
+  
+  // Blink leds
   showBoot();
   
   // Load and show saved working mode
   mode = readMode();
   showMode(mode);
   
+  // Enable watchdog
   wdt_enable(WDTO_15MS);
 }
+
+ISR (ADC_vect)
+{
+  //adcReading = ADC;
+  //adcDone = true;  
+  
+  //Serial.println ("done");
+} 
 
 // Arduino main loop
 void loop() {
@@ -192,6 +214,7 @@ void loop() {
       pressed = true;
       // Change to next boost mode
       mode = nextMode();
+      showMode(mode);
     }
   } else {
     pressed = false;
@@ -361,21 +384,23 @@ void loop() {
   analogWrite10b(output0Pin, output0Value);
   analogWrite10b(output1Pin, output1Value);
   
-  showMode(mode);
+  //TODO: changed to mode button scope
+  //showMode(mode);
   
   //Serial.println(mode);
   
-  delay(10);
+  //TODO: need delay?
+  //delay(10);
   
   //Serial.print("Loop time: ");
   //Serial.print(millis() - time);
   //Serial.println("ms");
   //time = millis();
   
-  digitalWrite(enableMuxPin, HIGH);
-  
+  // Watchdog reset
   wdt_reset();
   
+  // Debug loop counter
   tickDbgTime();
 }
 
