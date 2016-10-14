@@ -30,6 +30,9 @@ const int MODE_2_MAX = 2046; // 100% (1023 to 2046)
 // Max value to PWM
 const int MAX_PWM = 1023;
 
+// Number of times that ADC (sig0 and sig1) will be read to make a mean
+const int BASE_VALUES_LOOP_COUNT = 10;
+
 // Input signal pins, to read pedal position
 const int sensorPot0Pin = A0;
 const int sensorPot1Pin = A1;
@@ -72,6 +75,15 @@ int output1Value = 0;
 int sensorPot0CutValue = 0;
 int sensorPot1CutValue = 0;
 
+// Proportion between sig0 and sig1
+// Used to validate subsequent read
+float sig_021_proportion = 2.0;
+
+// Flag to control ADC initialization
+bool adc_done = false;
+
+bool need_full_init = false;
+
 // Current boost mode
 // 0 -> original
 // 1 -> boost 1 (50%)
@@ -105,6 +117,69 @@ void analogWrite10b(uint8_t pin, uint16_t val) {
     }
 }
 
+void readBaseValues() {
+  
+  // Calculate initial idle pedal position
+  // To avoid boost when pedal is not pressed
+  // TODO: auto find idle position
+  
+  unsigned int adc_0_sum = 0;
+  unsigned int adc_1_sum = 0;
+  
+  for(int i=0; i<BASE_VALUES_LOOP_COUNT; i++) {
+    adc_0_sum += analogRead(sensorPot0Pin);
+    adc_1_sum += analogRead(sensorPot1Pin);
+  }
+  
+  float adc_0_val = (adc_0_sum / BASE_VALUES_LOOP_COUNT);
+  float adc_1_val = (adc_1_sum / BASE_VALUES_LOOP_COUNT);
+  
+  // Engineering margin of safety :)
+  // TODO: smooth transition
+  sensorPot0CutValue = adc_0_val * 1.05;
+  sensorPot1CutValue = adc_1_val * 1.05;
+  
+  // Sig1 to sig2 proportion
+  // Theoretically, adc_1_val (or adc_0_val) never will be zero
+  sig_021_proportion = adc_0_val / adc_1_val;
+  
+  //Serial.println(adc_0_sum);
+  //Serial.println(adc_1_sum);
+  //Serial.println(adc_0_val);
+  //Serial.println(adc_1_val);
+  //Serial.println(sig_021_proportion);
+}
+
+void enableBoost() {
+  // Change mux/demux to use arduino signal
+  digitalWrite(enableMuxPin, HIGH);
+}
+
+void initOutput() {
+  
+  // Only (at setup) put the input value to output pin
+  // This will improves the PID
+  
+  sensorPot0Value = analogRead(sensorPot0Pin);
+  sensorPot1Value = analogRead(sensorPot1Pin);
+  
+  output0Value = map(sensorPot0Value, 0, 1023, 0, MAX_PWM);
+  output1Value = map(sensorPot1Value, 0, 1023, 0, MAX_PWM);
+  
+  analogWrite10b(output0Pin, output0Value);
+  analogWrite10b(output1Pin, output1Value);
+}
+
+ISR (ADC_vect)
+{
+  
+  if(!adc_done) {
+    Serial.println ("done");
+    adc_done = true;
+    need_full_init = true;
+  }
+} 
+
 // Arduino setup
 void setup() {
   
@@ -116,8 +191,8 @@ void setup() {
   // http://playground.arduino.cc/Main/TimerPWMCheatsheet
   // Online tool to calculate RC low pass filter:
   // http://sim.okawa-denshi.jp/en/PWMtool.php
-  // *** Doesnt work with PWM 10-bit ***
-  TCCR1B = TCCR1B & 0b11111000 | 0x01;
+  // *** Doesnt work with PWM 10-bit (with 10-bit, the frequency is always about 15kHz) ***
+  // TCCR1B = TCCR1B & 0b11111000 | 0x01;
   
   // Enable ADC interrupt
   ADCSRA |= B00001000;
@@ -127,7 +202,6 @@ void setup() {
   Serial.println("Serial initialized!");
   
   // Configure pins mode
-  
   //pinMode(sensorPot0Pin, INPUT_PULLUP);
   //pinMode(sensorPot1Pin, INPUT_PULLUP);
   //pinMode(outputFeedback0Pin, INPUT_PULLUP);
@@ -140,54 +214,51 @@ void setup() {
   pinMode(buttonModePin, INPUT);
   pinMode(enableMuxPin, OUTPUT);
   
-  //TODO: delay needed? (first adc convertion)
-  //TODO: interruption?
-  
-  // To avoid boost when pedal is not pressed
-  //TODO: do a mean
-  //TODO: auto find idle position
-  sensorPot0Value = analogRead(sensorPot0Pin);
-  sensorPot1Value = analogRead(sensorPot1Pin);
-  
-  // Engineering margin of safety :)
-  //TODO: smooth transition
-  sensorPot0CutValue = sensorPot0Value * 1.05;
-  sensorPot1CutValue = sensorPot1Value * 1.05;
-  
+  // Init PWM 10-bit
   setupPWM10bits();
-  
-  // Only (at setup) put the input value to output pin
-  // This will improves the PID
-  output0Value = map(sensorPot0Value, 0, 1023, 0, MAX_PWM);
-  output1Value = map(sensorPot1Value, 0, 1023, 0, MAX_PWM);
-  analogWrite10b(output0Pin, output0Value);
-  analogWrite10b(output1Pin, output1Value);
-  
-  // Change mux/demux to use arduino signal
-  digitalWrite(enableMuxPin, HIGH);
-  
+
   // Blink leds
-  showBoot();
+  showBoot(0);
+  
+  // First ADC convertion
+  // To initialize ADC... wait interruption to complete setup
+  analogRead(sensorPot0Pin);
   
   // Load and show saved working mode
   mode = readMode();
-  showMode(mode);
-  
-  // Enable watchdog
-  wdt_enable(WDTO_15MS);
+  //showMode(mode);
 }
-
-ISR (ADC_vect)
-{
-  //adcReading = ADC;
-  //adcDone = true;  
-  
-  //Serial.println ("done");
-} 
 
 // Arduino main loop
 void loop() {
 
+  if(!adc_done) {
+    // Watchdog reset
+    //wdt_reset();
+    //Serial.println("Skip");
+    return;
+  }
+  
+  if(need_full_init) {
+    
+    need_full_init = false;
+    
+    // Blink leds
+    showBoot(1);
+    
+    readBaseValues();
+    initOutput();
+    enableBoost();
+  
+    // Show saved working mode
+    showMode(mode); 
+    
+    // Enable watchdog
+    wdt_enable(WDTO_15MS);
+  }
+  
+  //Serial.println(mode);
+  
   // read feedback values (0-1023)
   feedback0Value = analogRead(outputFeedback0Pin);
   feedback1Value = analogRead(outputFeedback1Pin);
@@ -384,24 +455,14 @@ void loop() {
   analogWrite10b(output0Pin, output0Value);
   analogWrite10b(output1Pin, output1Value);
   
-  //TODO: changed to mode button scope
-  //showMode(mode);
-  
-  //Serial.println(mode);
-  
-  //TODO: need delay?
-  //delay(10);
-  
-  //Serial.print("Loop time: ");
-  //Serial.print(millis() - time);
-  //Serial.println("ms");
-  //time = millis();
-  
   // Watchdog reset
   wdt_reset();
   
   // Debug loop counter
   tickDbgTime();
+  
+  //TODO: need delay?
+  //delay(10);
 }
 
 // Verifies if show debug in this execution loop
@@ -441,15 +502,33 @@ int readMode() {
 }
 
 // Blink at startup
-void showBoot() {
+void showBoot(int type) {
 
-  digitalWrite(ledPin0, HIGH);   
-  digitalWrite(ledPin1, HIGH);
-  
-  delay(50);
-  
-  digitalWrite(ledPin0, LOW);   
-  digitalWrite(ledPin1, LOW);
+  switch(type) {
+    case 0:
+      digitalWrite(ledPin0, HIGH);   
+      digitalWrite(ledPin1, HIGH);
+      delay(150);
+      digitalWrite(ledPin0, LOW);   
+      digitalWrite(ledPin1, LOW);
+      delay(150);
+    break;
+    
+    case 1:
+      digitalWrite(ledPin0, HIGH);   
+      digitalWrite(ledPin1, HIGH);
+      delay(100);
+      digitalWrite(ledPin0, LOW);   
+      digitalWrite(ledPin1, LOW);
+      delay(100);
+      digitalWrite(ledPin0, HIGH);   
+      digitalWrite(ledPin1, HIGH);
+      delay(100);
+      digitalWrite(ledPin0, LOW);   
+      digitalWrite(ledPin1, LOW);
+      delay(100);
+    break;
+  }
 }
 
 // Show current mode with leds
