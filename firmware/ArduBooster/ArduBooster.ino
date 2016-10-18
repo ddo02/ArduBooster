@@ -72,8 +72,10 @@ int output0Value = 0;
 int output1Value = 0;
 
 // Minimum pedal value, used to disable boost when the pedal is idle
-int sensorPot0CutValue = 0;
-int sensorPot1CutValue = 0;
+//int sensorPot0CutValue = 0;
+//int sensorPot1CutValue = 0;
+int sensorPot0IdleValue = 0;
+int sensorPot1IdleValue = 0;
 
 // Proportion between sig0 and sig1
 // Used to validate subsequent read
@@ -131,22 +133,22 @@ void readBaseValues() {
     adc_1_sum += analogRead(sensorPot1Pin);
   }
   
-  float adc_0_val = (adc_0_sum / BASE_VALUES_LOOP_COUNT);
-  float adc_1_val = (adc_1_sum / BASE_VALUES_LOOP_COUNT);
+  sensorPot0IdleValue = (adc_0_sum / BASE_VALUES_LOOP_COUNT);
+  sensorPot1IdleValue = (adc_1_sum / BASE_VALUES_LOOP_COUNT);
   
   // Engineering margin of safety :)
   // TODO: smooth transition
-  sensorPot0CutValue = adc_0_val * 1.05;
-  sensorPot1CutValue = adc_1_val * 1.05;
+  //sensorPot0CutValue = adc_0_val * 1.05;
+  //sensorPot1CutValue = adc_1_val * 1.05;
   
   // Sig1 to sig2 proportion
-  // Theoretically, adc_1_val (or adc_0_val) never will be zero
-  sig_021_proportion = adc_0_val / adc_1_val;
+  // Theoretically, sensorPot1IdleValue (or sensorPot0IdleValue) never will be zero
+  sig_021_proportion = sensorPot0IdleValue / sensorPot1IdleValue;
   
   //Serial.println(adc_0_sum);
   //Serial.println(adc_1_sum);
-  //Serial.println(adc_0_val);
-  //Serial.println(adc_1_val);
+  //Serial.println(sensorPot0IdleValue);
+  //Serial.println(sensorPot1IdleValue);
   //Serial.println(sig_021_proportion);
 }
 
@@ -297,6 +299,10 @@ void loop() {
   //Serial.println(sensorPot0CutValue);
   //Serial.println(sensorPot1CutValue);
   
+  // TODO: 1.05 constant
+  int sensorPot0CutValue = sensorPot0IdleValue * 1.05;
+  int sensorPot1CutValue = sensorPot1IdleValue * 1.05;
+  
   // Boost mode 1 (check if pedal is not in idle position, too)
   if(mode == 1 && sensorPot0Value > sensorPot0CutValue && sensorPot1Value > sensorPot1CutValue) {
     
@@ -307,13 +313,19 @@ void loop() {
     int tmpOut0 = map(sensorPot0Value, 0, 1023, MODE_1_MIN, MODE_1_MAX);
     int tmpOut1 = map(sensorPot1Value, 0, 1023, MODE_1_MIN, MODE_1_MAX);
     
-    // Veryfies if the corrected value isnt too big
-    // If the value is more than ECU max value, the ECU can put the engine in safe mode
+    // Veryfies if the corrected value isnt too big or too small
+    // If the value is more than ECU max value (or min value), the ECU can put the engine in safe mode
     if (tmpOut0 > sensorPot0ValueMax) {
       tmpOut0 = sensorPot0ValueMax;
     }
     if (tmpOut1 > sensorPot1ValueMax) {
       tmpOut1 = sensorPot1ValueMax;
+    }
+    if (tmpOut0 < sensorPot0IdleValue) {
+      tmpOut0 = sensorPot0IdleValue;
+    }
+    if (tmpOut1 < sensorPot1IdleValue) {
+      tmpOut1 = sensorPot1IdleValue;
     }
     
     // Prepare to PWM
@@ -335,13 +347,19 @@ void loop() {
     int tmpOut0 = map(sensorPot0Value, 0, 1023, MODE_2_MIN, MODE_2_MAX);
     int tmpOut1 = map(sensorPot1Value, 0, 1023, MODE_2_MIN, MODE_2_MAX);
 
-    // Veryfies if the corrected value isnt too big
-    // If the value is more than ECU max value, the ECU can put the engine in safe mode
+    // Veryfies if the corrected value isnt too big or too small
+    // If the value is more than ECU max value (or min value), the ECU can put the engine in safe mode
     if (tmpOut0 > sensorPot0ValueMax) {
       tmpOut0 = sensorPot0ValueMax;
     }
     if (tmpOut1 > sensorPot1ValueMax) {
       tmpOut1 = sensorPot1ValueMax;
+    }
+    if (tmpOut0 < sensorPot0IdleValue) {
+      tmpOut0 = sensorPot0IdleValue;
+    }
+    if (tmpOut1 < sensorPot1IdleValue) {
+      tmpOut1 = sensorPot1IdleValue;
     }
     
     // Prepare to PWM
@@ -357,6 +375,13 @@ void loop() {
     output0Value = map(sensorPot0Value, 0, 1023, 0, MAX_PWM);
     output1Value = map(sensorPot1Value, 0, 1023, 0, MAX_PWM);
     
+  }
+  
+  //TODO: debug only
+  if(sensorPot0Value > sensorPot0CutValue && sensorPot1Value > sensorPot1CutValue) {
+    showNotIdle();
+  } else {
+    showMode(mode);
   }
   
   // Normalizes output
@@ -545,4 +570,9 @@ void showMode(int mode) {
     digitalWrite(ledPin0, LOW);   
     digitalWrite(ledPin1, HIGH);
   }
+}
+
+void showNotIdle() {
+  digitalWrite(ledPin0, HIGH);   
+  digitalWrite(ledPin1, HIGH);
 }
