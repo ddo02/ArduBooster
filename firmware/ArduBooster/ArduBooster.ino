@@ -6,11 +6,15 @@
 // TODO LIST:
 // Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
 // Tests with POT pedal sensor
+// Detect POT or HALL
+// Use internal pull-up
 // Auto find min sensor value (today, is readed is setup function)
-// *NOK* Save max pesal value * This can be a problem, if change the car
 // *OK* Enable watchdog * WD enabled
-// *NOK* Bypass when on idle * Not needed with PWM 10 bits
 // *OK* Lower engineering margin :) (10% to 5% [?]) * 5%
+// *NOK* Save max pesal value * This can be a problem, if change the car
+// *NOK* Bypass when on idle * Not needed with PWM 10 bits
+
+/** DEBUG FRAGS ***********************************************************************************/
 
 // Enable/Disable serial debug
 const bool DEBUG = false;
@@ -18,6 +22,10 @@ const bool DEBUG = false;
 // Debug timer counter
 unsigned int dbg_time_count = 0;
 const unsigned long dbg_time = 50; // loops
+
+/** END DEBUG FRAGS *******************************************************************************/
+
+/** CONSTANTS *************************************************************************************/
 
 // Boost mode 1 correction values (to use with map function)
 const int MODE_1_MIN = 0;
@@ -55,6 +63,10 @@ const int buttonModePin = 2;
 // Control pin, to enable/disable mux
 const int enableMuxPin = 11;
 
+/** END CONSTANTS *********************************************************************************/
+
+/** VARIABLES *************************************************************************************/
+
 // Pedal values
 int sensorPot0Value = 0;
 int sensorPot1Value = 0;
@@ -81,27 +93,34 @@ int sensorPot1IdleValue = 0;
 // Used to validate subsequent read
 float sig_021_proportion = 2.0;
 
-// Flag to control ADC initialization
-bool adc_done = false;
-
-bool need_full_init = false;
-
 // Current boost mode
 // 0 -> original
 // 1 -> boost 1 (50%)
 // 2 -> boost 2 (100%)
 int mode = 0;
 
-// Feedback PID
-// Used to correct output signal
-float Kp = 0.5;
-float Ki = 0.5;
-float Kd = 0.0;
-PID fb_pid0 = PID(Kp, Ki, Kd);
-PID fb_pid1 = PID(Kp, Ki, Kd);
+// Flag to determine if sensor is hall or not (potentiometer)
+bool is_hall_sensor = false;
 
-// Configure digital pins 9 and 10 as 10-bit PWM outputs.
-// With this config, PWM frequency is about 15khz
+bool need_final_init = false;
+bool need_find_sensor_type = false;
+
+bool testing_sensor_0 = false;
+bool testing_sensor_1 = false;
+
+// Flag to control ADC initialization
+bool adc_done = false;
+bool wait_test = false;
+
+
+/** END VARIABLES *********************************************************************************/
+
+/** METHODS ***************************************************************************************/
+
+/*
+Configure digital pins 9 and 10 as 10-bit PWM outputs.
+With this config, PWM frequency is about 15khz
+*/
 void setupPWM10bits() {
     DDRB |= _BV(PB1) | _BV(PB2);        // Set pins as outputs
     TCCR1A = _BV(COM1A1) | _BV(COM1B1)  // Non-inverting PWM
@@ -111,7 +130,10 @@ void setupPWM10bits() {
     ICR1 = 0x400;                       // TOP counter value (1024/10bits)
 }
 
-// 10-bit version of analogWrite()
+/*
+After configured (using setupPWM10bits function), 
+use this function to write PWM 10-bit
+*/
 void analogWrite10b(uint8_t pin, uint16_t val) {
     switch (pin) {
         case  9: OCR1A = val; break;
@@ -152,8 +174,10 @@ void readBaseValues() {
   //Serial.println(sig_021_proportion);
 }
 
+/*
+Change mux/demux to use arduino signal
+*/
 void enableBoost() {
-  // Change mux/demux to use arduino signal
   digitalWrite(enableMuxPin, HIGH);
 }
 
@@ -172,43 +196,39 @@ void initOutput() {
   analogWrite10b(output1Pin, output1Value);
 }
 
-ISR (ADC_vect)
+ISR(ADC_vect)
 {
   
   if(!adc_done) {
-    Serial.println ("done");
+    Serial.println ("ADC done!");
     adc_done = true;
-    need_full_init = true;
+    //need_final_init = true;
+  }
+  else if(need_find_sensor_type) {
+    if(testing_sensor_0) {
+      sensorPot0Value = ADCL | (ADCH << 8);//ADC;
+      wait_test = false;
+    }
+    else if(testing_sensor_1) {
+      sensorPot1Value = ADCL | (ADCH << 8);//ADC;
+      wait_test = false;
+    }
   }
 } 
 
-// Arduino setup
+/*
+Arduino setup
+*/
 void setup() {
   
-  // Changing Timer1 frequency to 31372.55Hz
-  // This change the PWM (of analogWrite) frequency
-  // This improves RC low pass filter
-  //
-  // Documentation about Timer frequency change:
-  // http://playground.arduino.cc/Main/TimerPWMCheatsheet
-  // Online tool to calculate RC low pass filter:
-  // http://sim.okawa-denshi.jp/en/PWMtool.php
-  // *** Doesnt work with PWM 10-bit (with 10-bit, the frequency is always about 15kHz) ***
-  // TCCR1B = TCCR1B & 0b11111000 | 0x01;
-  
-  // Enable ADC interrupt
+  // Enable ADC interrupt (call function ISR)
   ADCSRA |= B00001000;
   
-  // Init debug serial
+  // Init serial debug
   Serial.begin(9600);
   Serial.println("Serial initialized!");
   
-  // Configure pins mode
-  //pinMode(sensorPot0Pin, INPUT_PULLUP);
-  //pinMode(sensorPot1Pin, INPUT_PULLUP);
-  //pinMode(outputFeedback0Pin, INPUT_PULLUP);
-  //pinMode(outputFeedback1Pin, INPUT_PULLUP);
-  
+  // Configure some pins
   pinMode(ledPin0, OUTPUT);  
   pinMode(ledPin1, OUTPUT);
   pinMode(output0Pin, OUTPUT);
@@ -219,41 +239,83 @@ void setup() {
   // Init PWM 10-bit
   setupPWM10bits();
 
-  // Blink leds
+  // Blink leds (initial boot)
   showBoot(0);
   
   // First ADC convertion
   // To initialize ADC... wait interruption to complete setup
+  // Needed to set "adc_done" flag
   analogRead(sensorPot0Pin);
   
-  // Load and show saved working mode
+  // Load saved working mode
   mode = readMode();
-  //showMode(mode);
+  
+  //TODO: new method
+  need_find_sensor_type = true;
+  // pull-down
+  pinMode(sensorPot0Pin, OUTPUT);
+  pinMode(sensorPot1Pin, OUTPUT);
+  digitalWrite(sensorPot0Pin, LOW);
+  digitalWrite(sensorPot1Pin, LOW);
 }
 
 // Arduino main loop
 void loop() {
 
-  if(!adc_done) {
-    // Watchdog reset
-    //wdt_reset();
-    //Serial.println("Skip");
+  if(!adc_done || wait_test) {
+    Serial.println("Skip!");
     return;
   }
   
-  if(need_full_init) {
+  if(need_find_sensor_type) {
     
-    need_full_init = false;
+    //TODO: call in final initialization
     
-    // Blink leds
+    Serial.println("Finding sensor type...");
+    
+    sensorPot0Value = analogRead(sensorPot0Pin);
+    sensorPot1Value = analogRead(sensorPot1Pin);
+    
+    //TODO: contant
+    if(sensorPot0Value <= 20 && sensorPot1Value <= 20) {
+      is_hall_sensor = true;
+      
+      pinMode(sensorPot0Pin, INPUT_PULLUP);
+      pinMode(sensorPot1Pin, INPUT_PULLUP);
+    }
+    
+    Serial.print("Sensor 0: ");
+    Serial.println(sensorPot0Value);
+    Serial.print("Sensor 1: ");
+    Serial.println(sensorPot1Value);
+    
+    if(is_hall_sensor)
+      Serial.println("HALL SENSOR");
+    else
+      Serial.println("POT SENSOR");
+    
+    need_find_sensor_type = false;
+    need_final_init = true;
+    return;
+  }
+  else if(need_final_init) {
+    
+    Serial.println("Starting final initialization...");
+    
+    need_final_init = false;
+    
+    // Blink leds (final boot)
     showBoot(1);
     
     readBaseValues();
     initOutput();
     enableBoost();
   
-    // Show saved working mode
+    // Show working mode
     showMode(mode); 
+    
+    Serial.println("ArduBooster started!");
+    Serial.println("Enabling WD! Bye!!!");
     
     // Enable watchdog
     wdt_enable(WDTO_15MS);
@@ -396,85 +458,6 @@ void loop() {
   }
   if(output1Value < 0) {
     output1Value = 0; 
-  }
-  
-  // PID tests
-  if (false) {
-    
-    double correction0 = 1.0;
-    double correction1 = 1.0;
-  
-    correction0 = fb_pid0.process(map(feedback0Value, 0, 1023, 0, MAX_PWM), output0Value); // have / want
-    correction1 = fb_pid1.process(map(feedback1Value, 0, 1023, 0, MAX_PWM), output1Value); // have / want
-
-    int tmp0 = output0Value;
-    int tmp1 = output1Value;
-    
-    output0Value += correction0;
-    output1Value += correction1;
-    
-    if(output0Value > MAX_PWM) {
-      output0Value = MAX_PWM; 
-    }
-    if(output1Value > MAX_PWM) {
-      output1Value = MAX_PWM; 
-    }
-    if(output0Value < 0) {
-      output0Value = 0; 
-    }
-    if(output1Value < 0) {
-      output1Value = 0; 
-    }
-    
-    if (DEBUG && isShowTime()) {
-      
-      //char tbs[16];
-      //sprintf(tbs, "P%4dR%4dT%4d", x, y, z);
-      
-      //Serial.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      
-      /*
-      char buf[127];
-      sprintf(buf, "0:%d(%d)[%d]", 
-                    map(feedback0Value, 0, 1023, 0, MAX_PWM), 
-                    output0Value, 
-                    correction0);
-      
-      Serial.println(buf);
-      
-      char buf2[127];
-      sprintf(buf2, "1:%d(%d)[%d]", 
-                    map(feedback1Value, 0, 1023, 0, MAX_PWM), 
-                    output1Value, 
-                    correction1);
-      
-      Serial.println(buf2);
-      */
-      
-      Serial.print("CH0: ");
-      Serial.print(tmp0);
-      Serial.print("->");
-      Serial.print(output0Value);
-      Serial.print(" (");
-      Serial.print(map(feedback0Value, 0, 1023, 0, MAX_PWM));
-      Serial.print(" [");
-      Serial.print(correction0);
-      Serial.println("])");
-      
-      
-      Serial.print("CH1: ");
-      Serial.print(tmp1);
-      Serial.print("->");
-      Serial.print(output1Value);
-      Serial.print(" (");
-      Serial.print(map(feedback1Value, 0, 1023, 0, MAX_PWM));
-      Serial.print(" [");
-      Serial.print(correction1);
-      Serial.println("])");
-      
-      
-      //Serial.println("=================================");
-    }
   }
   
   analogWrite10b(output0Pin, output0Value);
