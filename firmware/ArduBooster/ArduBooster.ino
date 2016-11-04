@@ -1,7 +1,7 @@
 #include <EEPROM.h>
 #include <avr/wdt.h>
 
-#include "pid.h"
+#include "Filters.h"
 
 // TODO LIST:
 // Support to pedal with inverted signal (sensor 1 increase and sensor 2 decrease or vice-versa)
@@ -63,6 +63,8 @@ const int buttonModePin = 2;
 // Control pin, to enable/disable mux
 const int enableMuxPin = 11;
 
+const float filterCutFrequency = 100; // Hz
+
 /** END CONSTANTS *********************************************************************************/
 
 /** VARIABLES *************************************************************************************/
@@ -70,10 +72,6 @@ const int enableMuxPin = 11;
 // Pedal values
 int sensorPot0Value = 0;
 int sensorPot1Value = 0;
-
-// Feedback values
-int feedback0Value = 0;
-int feedback1Value = 0;
 
 // Maximum pedal value readed
 int sensorPot0ValueMax = 0;
@@ -100,7 +98,7 @@ float sig_021_proportion = 2.0;
 int mode = 0;
 
 // Flag to determine if sensor is hall or not (potentiometer)
-bool is_hall_sensor = false;
+bool is_hall_sensor = true;
 
 bool need_final_init = false;
 bool need_find_sensor_type = false;
@@ -108,10 +106,8 @@ bool need_find_sensor_type = false;
 bool testing_sensor_0 = false;
 bool testing_sensor_1 = false;
 
-// Flag to control ADC initialization
-bool adc_done = false;
-bool wait_test = false;
-
+FilterOnePole filter_pot_0(LOWPASS, filterCutFrequency);
+FilterOnePole filter_pot_1(LOWPASS, filterCutFrequency);
 
 /** END VARIABLES *********************************************************************************/
 
@@ -122,12 +118,15 @@ Configure digital pins 9 and 10 as 10-bit PWM outputs.
 With this config, PWM frequency is about 15khz
 */
 void setupPWM10bits() {
-    DDRB |= _BV(PB1) | _BV(PB2);        // Set pins as outputs
-    TCCR1A = _BV(COM1A1) | _BV(COM1B1)  // Non-inverting PWM
-        | _BV(WGM11);                   // Mode 14: fast PWM, TOP=ICR1
-    TCCR1B = _BV(WGM13) | _BV(WGM12)
-        | _BV(CS10);                    // No prescaling
-    ICR1 = 0x400;                       // TOP counter value (1024/10bits)
+  
+  Serial.println("Starting PWM 10-bit...");
+  
+  DDRB |= _BV(PB1) | _BV(PB2);        // Set pins as outputs
+  TCCR1A = _BV(COM1A1) | _BV(COM1B1)  // Non-inverting PWM
+      | _BV(WGM11);                   // Mode 14: fast PWM, TOP=ICR1
+  TCCR1B = _BV(WGM13) | _BV(WGM12)
+      | _BV(CS10);                    // No prescaling
+  ICR1 = 0x400;                       // TOP counter value (1024/10bits)
 }
 
 /*
@@ -141,7 +140,7 @@ void analogWrite10b(uint8_t pin, uint16_t val) {
     }
 }
 
-void readBaseValues() {
+void readIdleValues() {
   
   // Calculate initial idle pedal position
   // To avoid boost when pedal is not pressed
@@ -181,6 +180,7 @@ void enableBoost() {
   digitalWrite(enableMuxPin, HIGH);
 }
 
+/*
 void initOutput() {
   
   // Only (at setup) put the input value to output pin
@@ -195,25 +195,52 @@ void initOutput() {
   analogWrite10b(output0Pin, output0Value);
   analogWrite10b(output1Pin, output1Value);
 }
+*/
+
+/*
+Find sensor type.
+Potentiometer or hall effect (open collector)
+
+*** TO USE THIS, NEED HARDWARE MODIFICATION. DESABLE EXTERNAL PULL-UPS ***
+*/
+void findSensorType() {
+  
+  Serial.println("Finding sensor type...");
+  
+  // pull-down
+  pinMode(sensorPot0Pin, OUTPUT);
+  pinMode(sensorPot1Pin, OUTPUT);
+  digitalWrite(sensorPot0Pin, LOW);
+  digitalWrite(sensorPot1Pin, LOW);
+  
+  sensorPot0Value = analogRead(sensorPot0Pin);
+  sensorPot1Value = analogRead(sensorPot1Pin);
+  
+  //TODO: contant
+  if(sensorPot0Value <= 20 && sensorPot1Value <= 20) {
+    is_hall_sensor = true;
+    
+    pinMode(sensorPot0Pin, INPUT_PULLUP);
+    pinMode(sensorPot1Pin, INPUT_PULLUP);
+  } else {
+    is_hall_sensor = false;
+    pinMode(sensorPot0Pin, INPUT);
+    pinMode(sensorPot1Pin, INPUT);
+  }
+  
+  Serial.print("Sensor 0: ");
+  Serial.println(sensorPot0Value);
+  Serial.print("Sensor 1: ");
+  Serial.println(sensorPot1Value);
+  
+  if(is_hall_sensor)
+    Serial.println("HALL SENSOR");
+  else
+    Serial.println("POT SENSOR");
+}
 
 ISR(ADC_vect)
 {
-  
-  if(!adc_done) {
-    Serial.println ("ADC done!");
-    adc_done = true;
-    //need_final_init = true;
-  }
-  else if(need_find_sensor_type) {
-    if(testing_sensor_0) {
-      sensorPot0Value = ADCL | (ADCH << 8);//ADC;
-      wait_test = false;
-    }
-    else if(testing_sensor_1) {
-      sensorPot1Value = ADCL | (ADCH << 8);//ADC;
-      wait_test = false;
-    }
-  }
 } 
 
 /*
@@ -227,6 +254,7 @@ void setup() {
   // Init serial debug
   Serial.begin(9600);
   Serial.println("Serial initialized!");
+  Serial.println("Starting initialization...");
   
   // Configure some pins
   pinMode(ledPin0, OUTPUT);  
@@ -236,69 +264,31 @@ void setup() {
   pinMode(buttonModePin, INPUT);
   pinMode(enableMuxPin, OUTPUT);
   
+  //findSensorType();
+  readIdleValues();
+  
   // Init PWM 10-bit
   setupPWM10bits();
 
   // Blink leds (initial boot)
-  showBoot(0);
-  
-  // First ADC convertion
-  // To initialize ADC... wait interruption to complete setup
-  // Needed to set "adc_done" flag
-  analogRead(sensorPot0Pin);
+  showBoot();
   
   // Load saved working mode
   mode = readMode();
+  // Show working mode
+  showMode(mode);
   
-  //TODO: new method
-  need_find_sensor_type = true;
-  // pull-down
-  pinMode(sensorPot0Pin, OUTPUT);
-  pinMode(sensorPot1Pin, OUTPUT);
-  digitalWrite(sensorPot0Pin, LOW);
-  digitalWrite(sensorPot1Pin, LOW);
+  Serial.println("ArduBooster started!");
+  Serial.println("Enabling WD! Bye!!!");
+  
+  wdt_enable(WDTO_15MS);
 }
 
 // Arduino main loop
 void loop() {
-
-  if(!adc_done || wait_test) {
-    Serial.println("Skip!");
-    return;
-  }
   
-  if(need_find_sensor_type) {
-    
-    //TODO: call in final initialization
-    
-    Serial.println("Finding sensor type...");
-    
-    sensorPot0Value = analogRead(sensorPot0Pin);
-    sensorPot1Value = analogRead(sensorPot1Pin);
-    
-    //TODO: contant
-    if(sensorPot0Value <= 20 && sensorPot1Value <= 20) {
-      is_hall_sensor = true;
-      
-      pinMode(sensorPot0Pin, INPUT_PULLUP);
-      pinMode(sensorPot1Pin, INPUT_PULLUP);
-    }
-    
-    Serial.print("Sensor 0: ");
-    Serial.println(sensorPot0Value);
-    Serial.print("Sensor 1: ");
-    Serial.println(sensorPot1Value);
-    
-    if(is_hall_sensor)
-      Serial.println("HALL SENSOR");
-    else
-      Serial.println("POT SENSOR");
-    
-    need_find_sensor_type = false;
-    need_final_init = true;
-    return;
-  }
-  else if(need_final_init) {
+   /*
+   if(need_final_init) {
     
     Serial.println("Starting final initialization...");
     
@@ -307,8 +297,8 @@ void loop() {
     // Blink leds (final boot)
     showBoot(1);
     
-    readBaseValues();
-    initOutput();
+    //readBaseValues();
+    //initOutput();
     enableBoost();
   
     // Show working mode
@@ -320,16 +310,19 @@ void loop() {
     // Enable watchdog
     wdt_enable(WDTO_15MS);
   }
+  */
   
   //Serial.println(mode);
   
-  // read feedback values (0-1023)
-  feedback0Value = analogRead(outputFeedback0Pin);
-  feedback1Value = analogRead(outputFeedback1Pin);
-  
   // read pedal values (0-1023)
-  sensorPot0Value = analogRead(sensorPot0Pin);
-  sensorPot1Value = analogRead(sensorPot1Pin);
+  //sensorPot0Value = analogRead(sensorPot0Pin);
+  //sensorPot1Value = analogRead(sensorPot1Pin);
+  
+  filter_pot_0.input(analogRead(sensorPot0Pin));
+  filter_pot_1.input(analogRead(sensorPot1Pin));
+  
+  sensorPot0Value = analogRead(filter_pot_0.output());
+  sensorPot1Value = analogRead(filter_pot_1.output());
   
   // Compute max read value
   if (sensorPot0Value > sensorPot0ValueMax) {
@@ -467,10 +460,9 @@ void loop() {
   wdt_reset();
   
   // Debug loop counter
-  tickDbgTime();
+  //tickDbgTime();
   
-  //TODO: need delay?
-  //delay(10);
+  enableBoost();
 }
 
 // Verifies if show debug in this execution loop
@@ -510,33 +502,20 @@ int readMode() {
 }
 
 // Blink at startup
-void showBoot(int type) {
+void showBoot() {
 
-  switch(type) {
-    case 0:
-      digitalWrite(ledPin0, HIGH);   
-      digitalWrite(ledPin1, HIGH);
-      delay(150);
-      digitalWrite(ledPin0, LOW);   
-      digitalWrite(ledPin1, LOW);
-      delay(150);
-    break;
-    
-    case 1:
-      digitalWrite(ledPin0, HIGH);   
-      digitalWrite(ledPin1, HIGH);
-      delay(100);
-      digitalWrite(ledPin0, LOW);   
-      digitalWrite(ledPin1, LOW);
-      delay(100);
-      digitalWrite(ledPin0, HIGH);   
-      digitalWrite(ledPin1, HIGH);
-      delay(100);
-      digitalWrite(ledPin0, LOW);   
-      digitalWrite(ledPin1, LOW);
-      delay(100);
-    break;
-  }
+  digitalWrite(ledPin0, HIGH);   
+  digitalWrite(ledPin1, HIGH);
+  delay(100);
+  digitalWrite(ledPin0, LOW);   
+  digitalWrite(ledPin1, LOW);
+  delay(100);
+  digitalWrite(ledPin0, HIGH);   
+  digitalWrite(ledPin1, HIGH);
+  delay(100);
+  digitalWrite(ledPin0, LOW);   
+  digitalWrite(ledPin1, LOW);
+  delay(100);
 }
 
 // Show current mode with leds
