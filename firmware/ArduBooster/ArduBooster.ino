@@ -10,7 +10,7 @@
 // Use internal pull-up
 // Auto find min sensor value (today, is readed is setup function)
 // *OK* Enable watchdog * WD enabled
-// *OK* Lower engineering margin :) (10% to 5% [?]) * 5%
+// *OK* Lower engineering margin :) (10% to 5% [?]) * 7%
 // *NOK* Save max pesal value * This can be a problem, if change the car
 // *NOK* Bypass when on idle * Not needed with PWM 10 bits
 
@@ -82,8 +82,8 @@ int output0Value = 0;
 int output1Value = 0;
 
 // Minimum pedal value, used to disable boost when the pedal is idle
-//int sensorPot0CutValue = 0;
-//int sensorPot1CutValue = 0;
+int sensorPot0CutValue = 0;
+int sensorPot1CutValue = 0;
 int sensorPot0IdleValue = 0;
 int sensorPot1IdleValue = 0;
 
@@ -106,8 +106,8 @@ bool need_find_sensor_type = false;
 bool testing_sensor_0 = false;
 bool testing_sensor_1 = false;
 
-FilterOnePole filter_pot_0(LOWPASS, filterCutFrequency);
-FilterOnePole filter_pot_1(LOWPASS, filterCutFrequency);
+//FilterOnePole filter_pot_0(LOWPASS, filterCutFrequency);
+//FilterOnePole filter_pot_1(LOWPASS, filterCutFrequency);
 
 /** END VARIABLES *********************************************************************************/
 
@@ -177,7 +177,18 @@ void readIdleValues() {
 Change mux/demux to use arduino signal
 */
 void enableBoost() {
-  digitalWrite(enableMuxPin, HIGH);
+
+  // First of all
+  // Verifies if PWM output RC filter had time enough to get correct value
+  // To current RC values (R=100k and C=100n, with 15KHz), this time is about 25ms
+  
+  static unsigned long firstTime = millis();
+  static bool boostEnabled = false;
+  unsigned long timeToRC = 25; //ms
+  if(!boostEnabled && firstTime + timeToRC < millis()) {
+    digitalWrite(enableMuxPin, HIGH);
+    boostEnabled = true;
+  }
 }
 
 /*
@@ -216,7 +227,7 @@ void findSensorType() {
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
   
-  //TODO: contant
+  //TODO: constant
   if(sensorPot0Value <= 20 && sensorPot1Value <= 20) {
     is_hall_sensor = true;
     
@@ -249,12 +260,13 @@ Arduino setup
 void setup() {
   
   // Enable ADC interrupt (call function ISR)
-  ADCSRA |= B00001000;
+  //ADCSRA |= B00001000;
   
   // Init serial debug
   Serial.begin(9600);
-  Serial.println("Serial initialized!");
-  Serial.println("Starting initialization...");
+  
+  Serial.println("ArduBooster v2.0");
+  Serial.println("Starting ArduBooster...");
   
   // Configure some pins
   pinMode(ledPin0, OUTPUT);  
@@ -266,6 +278,10 @@ void setup() {
   
   //findSensorType();
   readIdleValues();
+
+  // TODO: 1.07 constant
+  sensorPot0CutValue = sensorPot0IdleValue * 1.07;
+  sensorPot1CutValue = sensorPot1IdleValue * 1.07;
   
   // Init PWM 10-bit
   setupPWM10bits();
@@ -287,42 +303,16 @@ void setup() {
 // Arduino main loop
 void loop() {
   
-   /*
-   if(need_final_init) {
-    
-    Serial.println("Starting final initialization...");
-    
-    need_final_init = false;
-    
-    // Blink leds (final boot)
-    showBoot(1);
-    
-    //readBaseValues();
-    //initOutput();
-    enableBoost();
-  
-    // Show working mode
-    showMode(mode); 
-    
-    Serial.println("ArduBooster started!");
-    Serial.println("Enabling WD! Bye!!!");
-    
-    // Enable watchdog
-    wdt_enable(WDTO_15MS);
-  }
-  */
-  
   //Serial.println(mode);
   
   // read pedal values (0-1023)
-  //sensorPot0Value = analogRead(sensorPot0Pin);
-  //sensorPot1Value = analogRead(sensorPot1Pin);
+  sensorPot0Value = analogRead(sensorPot0Pin);
+  sensorPot1Value = analogRead(sensorPot1Pin);
   
-  filter_pot_0.input(analogRead(sensorPot0Pin));
-  filter_pot_1.input(analogRead(sensorPot1Pin));
-  
-  sensorPot0Value = analogRead(filter_pot_0.output());
-  sensorPot1Value = analogRead(filter_pot_1.output());
+  //filter_pot_0.input(analogRead(sensorPot0Pin));
+  //filter_pot_1.input(analogRead(sensorPot1Pin));
+  //sensorPot0Value = filter_pot_0.output();
+  //sensorPot1Value = filter_pot_1.output();
   
   // Compute max read value
   if (sensorPot0Value > sensorPot0ValueMax) {
@@ -331,10 +321,11 @@ void loop() {
   if (sensorPot1Value > sensorPot1ValueMax) {
     sensorPot1ValueMax = sensorPot1Value;
   }
-  
+
+  //TODO: Change this code to an interrupt
+  //TODO: Need a small cap, to avoid multi interrupt fire
   // read button mode
   int buttonModeState = digitalRead(buttonModePin);
-
   // if pressed, change the boost mode
   static boolean pressed = false;
   if (buttonModeState == HIGH) {
@@ -349,14 +340,16 @@ void loop() {
   }
   
   //Serial.println(mode);
+  //Serial.println("Sensor 0: ");
   //Serial.println(sensorPot0Value);
+  //Serial.println("Sensor 1: ");
   //Serial.println(sensorPot1Value);
+
+  //Serial.println("Cut 0: ");
   //Serial.println(sensorPot0CutValue);
+  //Serial.println("Cut 1: ");
   //Serial.println(sensorPot1CutValue);
-  
-  // TODO: 1.05 constant
-  int sensorPot0CutValue = sensorPot0IdleValue * 1.05;
-  int sensorPot1CutValue = sensorPot1IdleValue * 1.05;
+  //Serial.println();
   
   // Boost mode 1 (check if pedal is not in idle position, too)
   if(mode == 1 && sensorPot0Value > sensorPot0CutValue && sensorPot1Value > sensorPot1CutValue) {
@@ -386,11 +379,6 @@ void loop() {
     // Prepare to PWM
     output0Value = map(tmpOut0, 0, 1023, 0, MAX_PWM);
     output1Value = map(tmpOut1, 0, 1023, 0, MAX_PWM);
-    
-    
-    //Serial.println(tmpOut0);
-    //Serial.println(output0Value);
-    //Serial.println();
   } 
   // Boost mode 2 (check if pedal is not in idle position, too)
   else if(mode == 2 && sensorPot0Value > sensorPot0CutValue && sensorPot1Value > sensorPot1CutValue) {
@@ -401,6 +389,11 @@ void loop() {
     
     int tmpOut0 = map(sensorPot0Value, 0, 1023, MODE_2_MIN, MODE_2_MAX);
     int tmpOut1 = map(sensorPot1Value, 0, 1023, MODE_2_MIN, MODE_2_MAX);
+
+    //Serial.println("TPM 0: ");
+    //Serial.println(tmpOut0);
+    //Serial.println("TMP 1: ");
+    //Serial.println(tmpOut1);
 
     // Veryfies if the corrected value isnt too big or too small
     // If the value is more than ECU max value (or min value), the ECU can put the engine in safe mode
@@ -452,15 +445,16 @@ void loop() {
   if(output1Value < 0) {
     output1Value = 0; 
   }
-  
+
+  //Serial.println(output0Value);
+  //Serial.println(output1Value);
+  //Serial.println();
+    
   analogWrite10b(output0Pin, output0Value);
   analogWrite10b(output1Pin, output1Value);
   
   // Watchdog reset
   wdt_reset();
-  
-  // Debug loop counter
-  //tickDbgTime();
   
   enableBoost();
 }
@@ -468,14 +462,6 @@ void loop() {
 // Verifies if show debug in this execution loop
 bool isShowTime() {
   return dbg_time_count == dbg_time;
-}
-
-// Debug time count
-void tickDbgTime() {
-  dbg_time_count += 1;
-  if (dbg_time_count > dbg_time) {
-    dbg_time_count = 0;
-  }
 }
 
 // Change to next mode and store in eeprom

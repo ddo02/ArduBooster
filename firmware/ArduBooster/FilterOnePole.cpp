@@ -1,5 +1,5 @@
 #include "FilterOnePole.h"
-#include "FloatDefine.h"
+//#include "FloatDefine.h"
 
 FilterOnePole::FilterOnePole( FILTER_TYPE ft, float fc, float initialValue ) {
   setFilter( ft, fc, initialValue );

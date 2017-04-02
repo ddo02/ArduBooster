@@ -1,0 +1,10 @@
+Instructions to burn firmware on ArduBooster v1.0 board:
+
+- Using an Arduino Uno (or compatible) board as a burner, to upload firmware to ArduBooster (Arduino as USB-to-Serial).
+- Remove uC from Arduino board.
+- Wire ArduBooster reset pin to Arduino reset pin.
+- Wire ArduBooster Tx to Arduino Rx.
+- Wire ArduBooster Rx to Arduino Tx.
+- Connect Arduino Gnd and 5V to ArduBooster.
+- On Arduino IDE, select the board according to used on ArduBooster (Arduino Uno recommended).
+- BURN!!!
