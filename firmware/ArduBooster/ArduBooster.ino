@@ -91,6 +91,9 @@ int sensorPot1IdleValue = 0;
 // Used to validate subsequent read
 float sig_021_proportion = 2.0;
 
+double first_vcc;
+double current_vcc;
+
 // Current boost mode
 // 0 -> original
 // 1 -> boost 1 (50%)
@@ -258,6 +261,8 @@ ISR(ADC_vect)
 Arduino setup
 */
 void setup() {
+
+  //analogReference(INTERNAL);
   
   // Enable ADC interrupt (call function ISR)
   //ADCSRA |= B00001000;
@@ -279,6 +284,9 @@ void setup() {
   //findSensorType();
   readIdleValues();
 
+  first_vcc = readVcc()/1000.0;
+  current_vcc = first_vcc;
+  
   // TODO: 1.07 constant
   sensorPot0CutValue = sensorPot0IdleValue * 1.07;
   sensorPot1CutValue = sensorPot1IdleValue * 1.07;
@@ -304,10 +312,34 @@ void setup() {
 void loop() {
   
   //Serial.println(mode);
+
   
+  //ADCValue = analogRead(0);
+  //Voltage = (ADCValue / 1024.0) * Vcc;
+
   // read pedal values (0-1023)
   sensorPot0Value = analogRead(sensorPot0Pin);
   sensorPot1Value = analogRead(sensorPot1Pin);
+
+  //Serial.println("=========");
+  //Serial.println(sensorPot0Value);
+  //Serial.println(sensorPot1Value);
+  
+  // TODO: delay problem???
+  static int vcc_pass_count = 0;
+  vcc_pass_count++;
+  if (vcc_pass_count > 50) {
+    //current_vcc = readVcc()/1000.0;
+    vcc_pass_count = 0;
+  }
+  //sensorPot0Value = (sensorPot0Value * first_vcc) / current_vcc;
+  //sensorPot1Value = (sensorPot1Value * first_vcc) / current_vcc;
+
+  //Serial.println(first_vcc);
+  //Serial.println(Vcc);
+  //Serial.println(sensorPot0Value);
+  //Serial.println(sensorPot1Value);
+  //Serial.println("=========");
   
   //filter_pot_0.input(analogRead(sensorPot0Pin));
   //filter_pot_1.input(analogRead(sensorPot1Pin));
@@ -464,6 +496,19 @@ bool isShowTime() {
   return dbg_time_count == dbg_time;
 }
 
+long readVcc() {
+  long result;
+  // Read 1.1V reference against AVcc
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Convert
+  while (bit_is_set(ADCSRA,ADSC));
+  result = ADCL;
+  result |= ADCH<<8;
+  result = 1125300L / result; // Back-calculate AVcc in mV
+  return result;
+}
+
 // Change to next mode and store in eeprom
 int nextMode() {
   
@@ -489,7 +534,7 @@ int readMode() {
 
 // Blink at startup
 void showBoot() {
-
+  
   digitalWrite(ledPin0, HIGH);   
   digitalWrite(ledPin1, HIGH);
   delay(100);
@@ -502,6 +547,7 @@ void showBoot() {
   digitalWrite(ledPin0, LOW);   
   digitalWrite(ledPin1, LOW);
   delay(100);
+  
 }
 
 // Show current mode with leds
