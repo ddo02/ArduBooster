@@ -44,12 +44,12 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L CONN_01X05 P3
+L CONN_01X05 P4
 U 1 1 54D7F0D9
 P 8200 4400
-F 0 "P3" H 8200 4700 50  0000 C CNN
+F 0 "P4" H 8200 4700 50  0000 C CNN
 F 1 "CONTROL" V 8300 4400 50  0000 C CNN
-F 2 "Connect:Wafer_Horizontal15x5.8x7RM2.5-5" H 8200 4400 60  0001 C CNN
+F 2 "Connectors:Wafer_Horizontal15x5.8x7RM2.5-5" H 8200 4400 60  0001 C CNN
 F 3 "" H 8200 4400 60  0000 C CNN
 	1    8200 4400
 	1    0    0    1   
@@ -65,10 +65,6 @@ F 3 "" H 7850 4750 60  0000 C CNN
 	1    7850 4750
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	7850 4750 7850 4600
-Wire Wire Line
-	7850 4600 8000 4600
 $Comp
 L +5V #PWR02
 U 1 1 54D7F26C
@@ -80,18 +76,8 @@ F 3 "" H 7850 4050 60  0000 C CNN
 	1    7850 4050
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8000 4200 7850 4200
-Wire Wire Line
-	7850 4200 7850 4050
-Wire Wire Line
-	7700 4500 8000 4500
-Wire Wire Line
-	7700 4400 8000 4400
 Text HLabel 7700 4300 0    60   Input ~ 0
 SWITCH
-Wire Wire Line
-	7700 4300 8000 4300
 Text HLabel 7700 4500 0    60   Output ~ 0
 LED1
 Text HLabel 7700 4400 0    60   Output ~ 0
@@ -105,10 +91,10 @@ CH1_PEDAL_SIG
 Text HLabel 4150 4300 2    60   Input ~ 0
 CH0_PEDAL_SIG
 $Comp
-L CONN_01X06 P4
+L CONN_01X06 P1
 U 1 1 54E8D924
 P 3450 4350
-F 0 "P4" H 3450 4800 50  0000 C CNN
+F 0 "P1" H 3450 4800 50  0000 C CNN
 F 1 "MAIN_CONN" V 3550 4350 50  0000 C CNN
 F 2 "Connectors_Molex:Molex_MiniFit-JR-5569-06A1_2x03x4.20mm_Angled" H 3450 4350 60  0001 C CNN
 F 3 "" H 3450 4350 60  0000 C CNN
@@ -159,6 +145,76 @@ F 3 "" H 4100 4900 60  0000 C CNN
 	1    4100 4900
 	-1   0    0    1   
 $EndComp
+$Comp
+L CONN_01X02 P3
+U 1 1 57BCD0AF
+P 8050 2650
+F 0 "P3" H 8050 2800 50  0000 C CNN
+F 1 "DEBUG TX/RX" V 8150 2650 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02_Pitch2.54mm" H 8050 2650 50  0001 C CNN
+F 3 "" H 8050 2650 50  0000 C CNN
+	1    8050 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X06 P2
+U 1 1 57BCD0E6
+P 3800 2750
+F 0 "P2" H 3800 2950 50  0000 C CNN
+F 1 "ISP" H 3800 2550 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06_Pitch2.54mm" H 3800 1550 50  0001 C CNN
+F 3 "" H 3800 1550 50  0000 C CNN
+	1    3800 2750
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR07
+U 1 1 57BCD18D
+P 4050 2450
+F 0 "#PWR07" H 4050 2300 60  0001 C CNN
+F 1 "+5V" H 4050 2590 60  0000 C CNN
+F 2 "" H 4050 2450 60  0000 C CNN
+F 3 "" H 4050 2450 60  0000 C CNN
+	1    4050 2450
+	1    0    0    -1  
+$EndComp
+Text HLabel 4300 2500 2    60   Output ~ 0
+RESET
+Text HLabel 4300 2800 2    60   Output ~ 0
+SCK
+Text HLabel 4300 2700 2    60   Input ~ 0
+MISO
+Text HLabel 4300 2600 2    60   Input ~ 0
+MOSI
+Text HLabel 7600 2600 0    60   Input ~ 0
+TX
+Text HLabel 7600 2700 0    60   Output ~ 0
+RX
+$Comp
+L GNDREF #PWR08
+U 1 1 57BCD1A8
+P 4050 3050
+F 0 "#PWR08" H 4050 2800 60  0001 C CNN
+F 1 "GNDREF" H 4050 2900 60  0000 C CNN
+F 2 "" H 4050 3050 60  0000 C CNN
+F 3 "" H 4050 3050 60  0000 C CNN
+	1    4050 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7850 4750 7850 4600
+Wire Wire Line
+	7850 4600 8000 4600
+Wire Wire Line
+	8000 4200 7850 4200
+Wire Wire Line
+	7850 4200 7850 4050
+Wire Wire Line
+	7700 4500 8000 4500
+Wire Wire Line
+	7700 4400 8000 4400
+Wire Wire Line
+	7700 4300 8000 4300
 Wire Wire Line
 	3650 4200 4150 4200
 Wire Wire Line
@@ -185,80 +241,24 @@ Wire Wire Line
 Wire Wire Line
 	4100 3950 3850 3950
 Connection ~ 3850 3950
-$Comp
-L CONN_01X02 P2
-U 1 1 57BCD0AF
-P 8050 2650
-F 0 "P2" H 8050 2800 50  0000 C CNN
-F 1 "DEBUG TX/RX" V 8150 2650 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 8050 2650 50  0001 C CNN
-F 3 "" H 8050 2650 50  0000 C CNN
-	1    8050 2650
-	1    0    0    -1  
-$EndComp
-$Comp
-L CONN_02X03 P1
-U 1 1 57BCD0E6
-P 3850 2700
-F 0 "P1" H 3850 2900 50  0000 C CNN
-F 1 "ISP" H 3850 2500 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_2x03" H 3850 1500 50  0001 C CNN
-F 3 "" H 3850 1500 50  0000 C CNN
-	1    3850 2700
-	1    0    0    -1  
-$EndComp
-$Comp
-L +5V #PWR07
-U 1 1 57BCD18D
-P 4200 2500
-F 0 "#PWR07" H 4200 2350 60  0001 C CNN
-F 1 "+5V" H 4200 2640 60  0000 C CNN
-F 2 "" H 4200 2500 60  0000 C CNN
-F 3 "" H 4200 2500 60  0000 C CNN
-	1    4200 2500
-	1    0    0    -1  
-$EndComp
-$Comp
-L GNDREF #PWR08
-U 1 1 57BCD1A8
-P 4200 2900
-F 0 "#PWR08" H 4200 2650 60  0001 C CNN
-F 1 "GNDREF" H 4200 2750 60  0000 C CNN
-F 2 "" H 4200 2900 60  0000 C CNN
-F 3 "" H 4200 2900 60  0000 C CNN
-	1    4200 2900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4100 2800 4200 2800
-Wire Wire Line
-	4200 2800 4200 2900
-Wire Wire Line
-	4200 2500 4200 2600
-Wire Wire Line
-	4200 2600 4100 2600
-Text HLabel 3200 2800 0    60   Output ~ 0
-RESET
-Wire Wire Line
-	3600 2800 3200 2800
-Text HLabel 3200 2700 0    60   Output ~ 0
-SCK
-Text HLabel 3200 2600 0    60   Input ~ 0
-MISO
-Wire Wire Line
-	3200 2600 3600 2600
-Wire Wire Line
-	3200 2700 3600 2700
-Text HLabel 4500 2700 2    60   Input ~ 0
-MOSI
-Wire Wire Line
-	4500 2700 4100 2700
-Text HLabel 7600 2600 0    60   Input ~ 0
-TX
-Text HLabel 7600 2700 0    60   Output ~ 0
-RX
 Wire Wire Line
 	7600 2700 7850 2700
 Wire Wire Line
 	7850 2600 7600 2600
+Wire Wire Line
+	4000 2800 4300 2800
+Wire Wire Line
+	4300 2700 4000 2700
+Wire Wire Line
+	4000 2600 4300 2600
+Wire Wire Line
+	4300 2500 4000 2500
+Wire Wire Line
+	4050 2450 4050 2900
+Wire Wire Line
+	4050 2900 4000 2900
+Wire Wire Line
+	4000 3000 4050 3000
+Wire Wire Line
+	4050 3000 4050 3050
 $EndSCHEMATC

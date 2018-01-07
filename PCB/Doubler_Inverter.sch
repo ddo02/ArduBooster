@@ -38,10 +38,10 @@ Title "Doubler/Inverter"
 Date "Dom 15 Fev 2015"
 Rev "1.0"
 Comp ""
-Comment1 "Output: -5V/9V"
-Comment2 "Input: 0V/5V"
-Comment3 "Doubler/Inverter - Source to OpAmp"
-Comment4 ""
+Comment1 "Used to ensure that OpAmp output will cover all  possible voltages (0V to 5V)"
+Comment2 "Output: -5V/9V"
+Comment3 "Input: 0V/5V"
+Comment4 "Doubler/Inverter - Power source to OpAmp"
 $EndDescr
 $Comp
 L ICL7660 U1
@@ -60,7 +60,7 @@ U 1 1 54D7C587
 P 3800 3550
 F 0 "C1" H 3850 3650 50  0000 L CNN
 F 1 "1u" H 3850 3450 50  0000 L CNN
-F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 3838 3400 30  0001 C CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W4.5mm_P5.00mm" H 3838 3400 30  0001 C CNN
 F 3 "" H 3800 3550 60  0000 C CNN
 	1    3800 3550
 	1    0    0    -1  
@@ -71,7 +71,7 @@ U 1 1 54D7C5F6
 P 5650 4550
 F 0 "C2" H 5700 4650 50  0000 L CNN
 F 1 "1u" H 5700 4450 50  0000 L CNN
-F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 5688 4400 30  0001 C CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W4.5mm_P5.00mm" H 5688 4400 30  0001 C CNN
 F 3 "" H 5650 4550 60  0000 C CNN
 	1    5650 4550
 	0    1    1    0   
@@ -82,7 +82,7 @@ U 1 1 54D7C60F
 P 7200 4950
 F 0 "C3" H 7250 5050 50  0000 L CNN
 F 1 "1u" H 7250 4850 50  0000 L CNN
-F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 7238 4800 30  0001 C CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W4.5mm_P5.00mm" H 7238 4800 30  0001 C CNN
 F 3 "" H 7200 4950 60  0000 C CNN
 	1    7200 4950
 	1    0    0    -1  
@@ -93,7 +93,7 @@ U 1 1 54D7C66C
 P 7600 4950
 F 0 "C4" H 7650 5050 50  0000 L CNN
 F 1 "1u" H 7650 4850 50  0000 L CNN
-F 2 "Capacitors_ThroughHole:C_Rect_L7_W4.5_P5" H 7638 4800 30  0001 C CNN
+F 2 "Capacitors_THT:C_Rect_L7.0mm_W4.5mm_P5.00mm" H 7638 4800 30  0001 C CNN
 F 3 "" H 7600 4950 60  0000 C CNN
 	1    7600 4950
 	1    0    0    -1  
@@ -104,7 +104,7 @@ U 1 1 54D7C6AB
 P 6400 4150
 F 0 "D1" H 6400 4250 50  0000 C CNN
 F 1 "1n4007" H 6400 4050 50  0000 C CNN
-F 2 "Discret:D3" H 6400 4150 60  0001 C CNN
+F 2 "Diodes_THT:D_A-405_P2.54mm_Vertical_AnodeUp" H 6400 4150 60  0001 C CNN
 F 3 "" H 6400 4150 60  0000 C CNN
 	1    6400 4150
 	0    -1   -1   0   
@@ -115,7 +115,7 @@ U 1 1 54D7C6F0
 P 6800 4550
 F 0 "D2" H 6800 4650 50  0000 C CNN
 F 1 "1n4007" H 6800 4450 50  0000 C CNN
-F 2 "Discret:D3" H 6800 4550 60  0001 C CNN
+F 2 "Diodes_THT:D_A-405_P2.54mm_Vertical_AnodeUp" H 6800 4550 60  0001 C CNN
 F 3 "" H 6800 4550 60  0000 C CNN
 	1    6800 4550
 	-1   0    0    1   
